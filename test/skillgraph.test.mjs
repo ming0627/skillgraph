@@ -98,6 +98,27 @@ Canonical skill instructions live at: .agents/skills/ux-autopilot/SKILL.md
     assert.ok(graph.issues.some((issue) => issue.type === 'old-default'));
     assert.equal(buildSkillGraph({ config }).contentHash, graph.contentHash);
   }));
+
+  it('resolves helper paths after a cd command', () => withFixture((root) => {
+    writeFixture(root, '.agents/skills/deploy-check/SKILL.md', `---
+name: deploy-check
+---
+# Deploy Check
+
+Run this before deploy:
+
+\`\`\`bash
+cd apps/web && node scripts/validate-config.cjs
+\`\`\`
+`);
+    writeFixture(root, 'apps/web/scripts/validate-config.cjs', 'module.exports = true;\n');
+
+    const graph = buildSkillGraph({ rootDir: root });
+    const helper = graph.nodes.find((node) => node.path === 'apps/web/scripts/validate-config.cjs');
+
+    assert.equal(helper.kind, 'helper-script');
+    assert.ok(!graph.issues.some((issue) => issue.type === 'missing-helper'));
+  }));
 });
 
 describe('generateMermaid', () => {

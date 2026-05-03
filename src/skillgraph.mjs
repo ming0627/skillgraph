@@ -299,9 +299,19 @@ function createScriptNode(scriptPath, config, nodes) {
   return `script:${normalized}`;
 }
 
-function resolveHelperReference(candidate, sourceNode, config) {
+function resolveHelperReference(candidate, sourceNode, config, sourceText = '') {
   const normalized = normalizePath(candidate).replace(/[.,;:]+$/g, '');
   if (!normalized.startsWith('scripts/')) return normalized;
+  const matchingLines = sourceText
+    .split('\n')
+    .filter((line) => line.includes(candidate) || line.includes(normalized));
+  for (const line of matchingLines) {
+    const cdMatch = line.match(/\bcd\s+(["']?)([^"';&|`\s]+)\1/);
+    if (!cdMatch) continue;
+    const cwd = normalizePath(cdMatch[2]).replace(/^\.\//, '').replace(/^\.\.\//, '');
+    const cwdCandidate = normalizePath(join(cwd, normalized));
+    if (existsSync(resolve(config.rootDir, cwdCandidate))) return cwdCandidate;
+  }
   if (existsSync(resolve(config.rootDir, normalized))) return normalized;
   const sourceRelative = normalizePath(join(dirname(sourceNode.path), normalized));
   if (existsSync(resolve(config.rootDir, sourceRelative))) return sourceRelative;
@@ -313,6 +323,7 @@ function helperRegexes(config) {
   const rootPattern = roots.map(escapeRegExp).join('|');
   return [
     new RegExp(`((${rootPattern})/[^\\s\`'")]+/scripts/[^\\s\`'")]+)`, 'g'),
+    /(?:^|[\s`'"])((?:[A-Za-z0-9_.-]+\/)+scripts\/[A-Za-z0-9_./-]+\.(?:mjs|cjs|js|sh|ts))/g,
     /(?:^|[\s`'"])((?:scripts|bin)\/[A-Za-z0-9_./-]+\.(?:mjs|cjs|js|sh|ts))/g,
   ];
 }
@@ -342,7 +353,7 @@ function inferEdges(config, nodes) {
       for (const match of text.matchAll(pattern)) helperRefs.push(match[1]);
     }
     for (const helperRef of [...new Set(helperRefs)]) {
-      const targetId = createScriptNode(resolveHelperReference(helperRef, node, config), config, nodes);
+      const targetId = createScriptNode(resolveHelperReference(helperRef, node, config, text), config, nodes);
       addEdge(edges, node.id, targetId, 'uses-helper', helperRef, config);
     }
 

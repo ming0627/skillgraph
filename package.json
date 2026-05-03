@@ -16,8 +16,8 @@
   "scripts": {
     "test": "node --test",
     "check": "node --check bin/skillgraph.mjs && node --check src/skillgraph.mjs && node --test",
-    "example:generate": "node bin/skillgraph.mjs generate --root examples/basic --config skillgraph.config.json",
-    "example:check": "node bin/skillgraph.mjs check --root examples/basic --config skillgraph.config.json",
+    "example:generate": "node bin/skillgraph.mjs generate --root examples/release-train-drift --config skillgraph.config.json",
+    "example:check": "node bin/skillgraph.mjs check --root examples/release-train-drift --config skillgraph.config.json",
     "leak:scan": "node bin/skillgraph.mjs privacy-scan --terms-file docs/private-leak-terms.txt"
   },
   "keywords": [

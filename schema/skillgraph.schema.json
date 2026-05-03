@@ -5,10 +5,25 @@
   "type": "object",
   "additionalProperties": true,
   "properties": {
+    "providers": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "github-copilot",
+          "openai-codex",
+          "cursor",
+          "claude-code",
+          "cline",
+          "kilo-code",
+          "agent-skills"
+        ]
+      },
+      "description": "Provider presets to scan, sorted by public adoption signals."
+    },
     "roots": {
       "type": "array",
       "items": { "type": "string" },
-      "description": "Directories that contain skill markdown files."
+      "description": "Additional directories or files that contain skill or instruction documents."
     },
     "outDir": {
       "type": "string",
@@ -27,6 +42,11 @@
     "exclude": {
       "type": "array",
       "items": { "type": "string" }
+    },
+    "instructionExtensions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "File extensions to scan inside provider/root directories."
     },
     "privacy": {
       "type": "object",

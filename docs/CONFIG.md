@@ -5,11 +5,13 @@ Skillgraph reads `skillgraph.config.json` from the target repo root by default.
 ```json
 {
   "$schema": "https://raw.githubusercontent.com/ming0627/skillgraph/main/schema/skillgraph.schema.json",
-  "roots": [".agents/skills", ".claude/skills"],
+  "providers": ["github-copilot", "cursor", "claude-code", "openai-codex", "cline", "kilo-code", "agent-skills"],
+  "roots": [],
   "outDir": "docs/skills",
   "canonicalRoots": [".agents/skills"],
   "wrapperRoots": [".claude/skills"],
   "exclude": ["**/node_modules/**", "**/.git/**"],
+  "instructionExtensions": [".md", ".mdc", ".txt", ".json", ".jsonc", ".yaml", ".yml"],
   "privacy": {
     "includeEvidence": true,
     "redactTerms": []
@@ -22,9 +24,23 @@ Skillgraph reads `skillgraph.config.json` from the target repo root by default.
 
 ## Fields
 
+`providers`
+
+Provider presets to scan. Default display order is:
+
+1. GitHub Copilot
+2. Cursor
+3. Claude Code
+4. OpenAI Codex
+5. Cline
+6. Kilo Code
+7. Generic agent skills
+
+Shared files such as `AGENTS.md` can be associated with more than one provider.
+
 `roots`
 
-Directories to scan for markdown skill docs.
+Additional directories or files to scan beyond provider presets.
 
 `outDir`
 
@@ -41,6 +57,10 @@ Roots that mirror or wrap canonical skills. Skillgraph detects wrapper docs when
 `exclude`
 
 Glob-like paths to skip while scanning.
+
+`instructionExtensions`
+
+File extensions to scan inside provider/root directories. This lets Skillgraph pick up Markdown, MDC, JSONC, and YAML instruction files.
 
 `privacy.includeEvidence`
 

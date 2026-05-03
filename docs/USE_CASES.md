@@ -12,16 +12,21 @@ Skillgraph gives you:
 - duplicate names
 - helper script dependencies
 
-## 2. QA Workflow Map
+## 2. Multi-Tool Release Train
 
-Problem: browser testing requires auth state, screenshots, DOM audits, and local helper scripts. The relationship is spread across several instructions.
+Problem: Copilot, Cursor, Claude Code, Codex, Cline, and Kilo Code each have their own instruction files for the same feature release process.
 
 Skillgraph shows:
 
-- high-level QA skill
-- auth recovery skill
-- screenshot or DOM helper scripts
-- wrappers that should stay in sync
+- product requirements
+- implementation workflow
+- auth and browser QA
+- review gate
+- release gate
+- rollback runbook
+- stale wrappers and missing helper scripts
+
+See `examples/release-train-drift`.
 
 ## 3. Design System Guardrail
 
@@ -68,4 +73,4 @@ The HTML explorer provides a searchable map of:
 
 Problem: you want to share the tool and pattern without exposing private app details.
 
-Use the example project under `examples/basic`, keep private generated artifacts out of the public repo, and run privacy scans before publishing screenshots or docs.
+Use the fictional release-train example under `examples/release-train-drift`, keep private generated artifacts out of the public repo, and run privacy scans before publishing screenshots or docs.

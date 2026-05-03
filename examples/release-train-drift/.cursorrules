@@ -1,0 +1,5 @@
+# Legacy Cursor Rules
+
+This file is intentionally kept to show older rule-file drift.
+
+For invite work, use auth-qa, browser-qa, and review-gate.

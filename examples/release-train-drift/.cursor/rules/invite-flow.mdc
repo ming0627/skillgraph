@@ -1,0 +1,10 @@
+---
+description: Keep Cursor edits aligned with the invite release train.
+globs:
+  - "src/invites/**"
+alwaysApply: false
+---
+
+# Invite Flow
+
+Use product-requirements before changing requirements, implementation-workflow before editing code, auth-qa before marking protected flows ready, and review-gate before final handoff.

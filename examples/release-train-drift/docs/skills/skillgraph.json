@@ -1,0 +1,1322 @@
+{
+  "generatedAt": "deterministic",
+  "generator": "skillgraph",
+  "configPath": "skillgraph.config.json",
+  "providers": [
+    {
+      "id": "github-copilot",
+      "name": "GitHub Copilot",
+      "popularityRank": 1,
+      "popularityBasis": "Largest public user signal among covered tools.",
+      "roots": [
+        ".github/copilot-instructions.md",
+        ".github/instructions",
+        ".github/prompts",
+        ".github/agents",
+        ".github/chatmodes",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "popularityRank": 2,
+      "popularityBasis": "Large AI editor adoption and native project rules.",
+      "roots": [
+        ".cursor/rules",
+        ".cursorrules",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "claude-code",
+      "name": "Claude Code",
+      "popularityRank": 3,
+      "popularityBasis": "Major agentic coding tool with project memory, skills, commands, and subagents.",
+      "roots": [
+        "CLAUDE.md",
+        ".claude/CLAUDE.md",
+        ".claude/skills",
+        ".claude/commands",
+        ".claude/agents",
+        ".claude/rules"
+      ]
+    },
+    {
+      "id": "openai-codex",
+      "name": "OpenAI Codex",
+      "popularityRank": 4,
+      "popularityBasis": "Native AGENTS.md workflow and strong public open-source repository signal.",
+      "roots": [
+        "AGENTS.md",
+        "AGENTS.override.md"
+      ]
+    },
+    {
+      "id": "cline",
+      "name": "Cline",
+      "popularityRank": 5,
+      "popularityBasis": "Popular open-source VS Code autonomous coding agent.",
+      "roots": [
+        ".clinerules",
+        ".cursorrules",
+        ".windsurfrules",
+        "AGENTS.md",
+        "memory-bank"
+      ]
+    },
+    {
+      "id": "kilo-code",
+      "name": "Kilo Code",
+      "popularityRank": 6,
+      "popularityBasis": "Popular open-source VS Code agent with project rules and JSONC instructions.",
+      "roots": [
+        "kilo.jsonc",
+        "kilo.json",
+        ".kilo/rules",
+        ".kilocode/rules",
+        ".kilocode/rules-code",
+        ".kilocoderules",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "agent-skills",
+      "name": "Generic Agent Skills",
+      "popularityRank": 7,
+      "popularityBasis": "Tool-agnostic skill roots used by multi-agent teams.",
+      "roots": [
+        ".agents/skills"
+      ]
+    }
+  ],
+  "roots": [
+    ".github/copilot-instructions.md",
+    ".github/instructions",
+    ".github/prompts",
+    ".github/agents",
+    ".github/chatmodes",
+    "AGENTS.md",
+    ".cursor/rules",
+    ".cursorrules",
+    "CLAUDE.md",
+    ".claude/CLAUDE.md",
+    ".claude/skills",
+    ".claude/commands",
+    ".claude/agents",
+    ".claude/rules",
+    "AGENTS.override.md",
+    ".clinerules",
+    ".windsurfrules",
+    "memory-bank",
+    "kilo.jsonc",
+    "kilo.json",
+    ".kilo/rules",
+    ".kilocode/rules",
+    ".kilocode/rules-code",
+    ".kilocoderules",
+    ".agents/skills"
+  ],
+  "summary": {
+    "nodeCount": 24,
+    "edgeCount": 73,
+    "issueCount": 3,
+    "byKind": {
+      "canonical-skill": 7,
+      "wrapper": 1,
+      "skill-doc": 10,
+      "helper-script": 5,
+      "missing-helper": 1
+    },
+    "byProvider": {
+      "Generic Agent Skills": 7,
+      "Claude Code": 2,
+      "Cline": 3,
+      "Cursor": 3,
+      "GitHub Copilot": 4,
+      "Kilo Code": 3,
+      "OpenAI Codex": 1,
+      "Helper Script": 6
+    }
+  },
+  "nodes": [
+    {
+      "id": ".agents/skills:auth-qa/SKILL.md",
+      "name": "auth-qa",
+      "normalizedName": "auth-qa",
+      "label": "auth-qa",
+      "kind": "canonical-skill",
+      "providers": [
+        "agent-skills"
+      ],
+      "provider": "agent-skills",
+      "providerNames": [
+        "Generic Agent Skills"
+      ],
+      "providerName": "Generic Agent Skills",
+      "popularityRank": 7,
+      "root": ".agents/skills",
+      "path": ".agents/skills/auth-qa/SKILL.md",
+      "description": "Prepare role-specific signed-in browser state for protected invite routes.",
+      "bytes": 269,
+      "tokenEstimate": 68,
+      "frontmatter": {
+        "name": "auth-qa",
+        "description": "Prepare role-specific signed-in browser state for protected invite routes."
+      }
+    },
+    {
+      "id": ".agents/skills:browser-qa/SKILL.md",
+      "name": "browser-qa",
+      "normalizedName": "browser-qa",
+      "label": "browser-qa",
+      "kind": "canonical-skill",
+      "providers": [
+        "agent-skills"
+      ],
+      "provider": "agent-skills",
+      "providerNames": [
+        "Generic Agent Skills"
+      ],
+      "providerName": "Generic Agent Skills",
+      "popularityRank": 7,
+      "root": ".agents/skills",
+      "path": ".agents/skills/browser-qa/SKILL.md",
+      "description": "Run browser smoke coverage for protected invite flows.",
+      "bytes": 246,
+      "tokenEstimate": 62,
+      "frontmatter": {
+        "name": "browser-qa",
+        "description": "Run browser smoke coverage for protected invite flows."
+      }
+    },
+    {
+      "id": ".agents/skills:implementation-workflow/SKILL.md",
+      "name": "implementation-workflow",
+      "normalizedName": "implementation-workflow",
+      "label": "implementation-workflow",
+      "kind": "canonical-skill",
+      "providers": [
+        "agent-skills"
+      ],
+      "provider": "agent-skills",
+      "providerNames": [
+        "Generic Agent Skills"
+      ],
+      "providerName": "Generic Agent Skills",
+      "popularityRank": 7,
+      "root": ".agents/skills",
+      "path": ".agents/skills/implementation-workflow/SKILL.md",
+      "description": "Turn requirements into scoped code, tests, and rollout steps.",
+      "bytes": 355,
+      "tokenEstimate": 89,
+      "frontmatter": {
+        "name": "implementation-workflow",
+        "description": "Turn requirements into scoped code, tests, and rollout steps."
+      }
+    },
+    {
+      "id": ".agents/skills:product-requirements/SKILL.md",
+      "name": "product-requirements",
+      "normalizedName": "product-requirements",
+      "label": "product-requirements",
+      "kind": "canonical-skill",
+      "providers": [
+        "agent-skills"
+      ],
+      "provider": "agent-skills",
+      "providerNames": [
+        "Generic Agent Skills"
+      ],
+      "providerName": "Generic Agent Skills",
+      "popularityRank": 7,
+      "root": ".agents/skills",
+      "path": ".agents/skills/product-requirements/SKILL.md",
+      "description": "Clarify user-visible behavior, non-goals, role rules, and acceptance criteria.",
+      "bytes": 393,
+      "tokenEstimate": 99,
+      "frontmatter": {
+        "name": "product-requirements",
+        "description": "Clarify user-visible behavior, non-goals, role rules, and acceptance criteria."
+      }
+    },
+    {
+      "id": ".agents/skills:release-gate/SKILL.md",
+      "name": "release-gate",
+      "normalizedName": "release-gate",
+      "label": "release-gate",
+      "kind": "canonical-skill",
+      "providers": [
+        "agent-skills"
+      ],
+      "provider": "agent-skills",
+      "providerNames": [
+        "Generic Agent Skills"
+      ],
+      "providerName": "Generic Agent Skills",
+      "popularityRank": 7,
+      "root": ".agents/skills",
+      "path": ".agents/skills/release-gate/SKILL.md",
+      "description": "Run release preflight and final handoff checks.",
+      "bytes": 284,
+      "tokenEstimate": 71,
+      "frontmatter": {
+        "name": "release-gate",
+        "description": "Run release preflight and final handoff checks."
+      }
+    },
+    {
+      "id": ".agents/skills:review-gate/SKILL.md",
+      "name": "review-gate",
+      "normalizedName": "review-gate",
+      "label": "review-gate",
+      "kind": "canonical-skill",
+      "providers": [
+        "agent-skills"
+      ],
+      "provider": "agent-skills",
+      "providerNames": [
+        "Generic Agent Skills"
+      ],
+      "providerName": "Generic Agent Skills",
+      "popularityRank": 7,
+      "root": ".agents/skills",
+      "path": ".agents/skills/review-gate/SKILL.md",
+      "description": "Review behavior, privacy, test evidence, and release risk before approval.",
+      "bytes": 304,
+      "tokenEstimate": 76,
+      "frontmatter": {
+        "name": "review-gate",
+        "description": "Review behavior, privacy, test evidence, and release risk before approval."
+      }
+    },
+    {
+      "id": ".agents/skills:rollback-runbook/SKILL.md",
+      "name": "rollback-runbook",
+      "normalizedName": "rollback-runbook",
+      "label": "rollback-runbook",
+      "kind": "canonical-skill",
+      "providers": [
+        "agent-skills"
+      ],
+      "provider": "agent-skills",
+      "providerNames": [
+        "Generic Agent Skills"
+      ],
+      "providerName": "Generic Agent Skills",
+      "popularityRank": 7,
+      "root": ".agents/skills",
+      "path": ".agents/skills/rollback-runbook/SKILL.md",
+      "description": "Prepare rollback steps and ownership before release.",
+      "bytes": 272,
+      "tokenEstimate": 68,
+      "frontmatter": {
+        "name": "rollback-runbook",
+        "description": "Prepare rollback steps and ownership before release."
+      }
+    },
+    {
+      "id": ".claude/skills:release-gate/SKILL.md",
+      "name": "release-gate",
+      "normalizedName": "release-gate",
+      "label": "release-gate",
+      "kind": "wrapper",
+      "providers": [
+        "claude-code"
+      ],
+      "provider": "claude-code",
+      "providerNames": [
+        "Claude Code"
+      ],
+      "providerName": "Claude Code",
+      "popularityRank": 3,
+      "root": ".claude/skills",
+      "path": ".claude/skills/release-gate/SKILL.md",
+      "description": "Canonical skill instructions live at: `.agents/skills/release-gate/SKILL.md`.",
+      "bytes": 219,
+      "tokenEstimate": 55,
+      "frontmatter": {}
+    },
+    {
+      "id": ".clinerules:invite-flow.md",
+      "name": "invite-flow",
+      "normalizedName": "invite-flow",
+      "label": "invite-flow",
+      "kind": "skill-doc",
+      "providers": [
+        "cline"
+      ],
+      "provider": "cline",
+      "providerNames": [
+        "Cline"
+      ],
+      "providerName": "Cline",
+      "popularityRank": 5,
+      "root": ".clinerules",
+      "path": ".clinerules/invite-flow.md",
+      "description": "Cline should use implementation-workflow before editing invite code.",
+      "bytes": 173,
+      "tokenEstimate": 44,
+      "frontmatter": {}
+    },
+    {
+      "id": ".cursor/rules:invite-flow.mdc",
+      "name": "invite-flow",
+      "normalizedName": "invite-flow",
+      "label": "invite-flow",
+      "kind": "skill-doc",
+      "providers": [
+        "cursor"
+      ],
+      "provider": "cursor",
+      "providerNames": [
+        "Cursor"
+      ],
+      "providerName": "Cursor",
+      "popularityRank": 2,
+      "root": ".cursor/rules",
+      "path": ".cursor/rules/invite-flow.mdc",
+      "description": "Keep Cursor edits aligned with the invite release train.",
+      "bytes": 325,
+      "tokenEstimate": 82,
+      "frontmatter": {
+        "description": "Keep Cursor edits aligned with the invite release train.",
+        "globs": "",
+        "alwaysApply": "false"
+      }
+    },
+    {
+      "id": ".github/instructions:review.instructions.md",
+      "name": "review.instructions",
+      "normalizedName": "review-instructions",
+      "label": "review.instructions",
+      "kind": "skill-doc",
+      "providers": [
+        "github-copilot"
+      ],
+      "provider": "github-copilot",
+      "providerNames": [
+        "GitHub Copilot"
+      ],
+      "providerName": "GitHub Copilot",
+      "popularityRank": 1,
+      "root": ".github/instructions",
+      "path": ".github/instructions/review.instructions.md",
+      "description": "applyTo: \"**/*\"",
+      "bytes": 219,
+      "tokenEstimate": 55,
+      "frontmatter": {
+        "applyTo": "**/*"
+      }
+    },
+    {
+      "id": ".github/prompts:write-tests.prompt.md",
+      "name": "write-tests.prompt",
+      "normalizedName": "write-tests-prompt",
+      "label": "write-tests.prompt",
+      "kind": "skill-doc",
+      "providers": [
+        "github-copilot"
+      ],
+      "provider": "github-copilot",
+      "providerNames": [
+        "GitHub Copilot"
+      ],
+      "providerName": "GitHub Copilot",
+      "popularityRank": 1,
+      "root": ".github/prompts",
+      "path": ".github/prompts/write-tests.prompt.md",
+      "description": "Use implementation-workflow first.",
+      "bytes": 168,
+      "tokenEstimate": 42,
+      "frontmatter": {}
+    },
+    {
+      "id": ".kilo/rules:invite-flow.md",
+      "name": "invite-flow",
+      "normalizedName": "invite-flow",
+      "label": "invite-flow",
+      "kind": "skill-doc",
+      "providers": [
+        "kilo-code"
+      ],
+      "provider": "kilo-code",
+      "providerNames": [
+        "Kilo Code"
+      ],
+      "providerName": "Kilo Code",
+      "popularityRank": 6,
+      "root": ".kilo/rules",
+      "path": ".kilo/rules/invite-flow.md",
+      "description": "Use implementation-workflow for invite edits.",
+      "bytes": 201,
+      "tokenEstimate": 51,
+      "frontmatter": {}
+    },
+    {
+      "id": "file:.cursorrules",
+      "name": ".cursorrules",
+      "normalizedName": "cursorrules",
+      "label": ".cursorrules",
+      "kind": "skill-doc",
+      "providers": [
+        "cursor",
+        "cline"
+      ],
+      "provider": "cursor",
+      "providerNames": [
+        "Cursor",
+        "Cline"
+      ],
+      "providerName": "Cursor / Cline",
+      "popularityRank": 2,
+      "root": ".cursorrules",
+      "path": ".cursorrules",
+      "description": "This file is intentionally kept to show older rule-file drift.",
+      "bytes": 146,
+      "tokenEstimate": 37,
+      "frontmatter": {}
+    },
+    {
+      "id": "file:.github/copilot-instructions.md",
+      "name": "copilot-instructions",
+      "normalizedName": "copilot-instructions",
+      "label": "copilot-instructions",
+      "kind": "skill-doc",
+      "providers": [
+        "github-copilot"
+      ],
+      "provider": "github-copilot",
+      "providerNames": [
+        "GitHub Copilot"
+      ],
+      "providerName": "GitHub Copilot",
+      "popularityRank": 1,
+      "root": ".github/copilot-instructions.md",
+      "path": ".github/copilot-instructions.md",
+      "description": "This [redacted] repository ships invite-flow changes through the same release train:",
+      "bytes": 393,
+      "tokenEstimate": 99,
+      "frontmatter": {}
+    },
+    {
+      "id": "file:AGENTS.md",
+      "name": "AGENTS",
+      "normalizedName": "agents",
+      "label": "AGENTS",
+      "kind": "skill-doc",
+      "providers": [
+        "github-copilot",
+        "cursor",
+        "openai-codex",
+        "cline",
+        "kilo-code"
+      ],
+      "provider": "github-copilot",
+      "providerNames": [
+        "GitHub Copilot",
+        "Cursor",
+        "OpenAI Codex",
+        "Cline",
+        "Kilo Code"
+      ],
+      "providerName": "GitHub Copilot / Cursor / OpenAI Codex / Cline / Kilo Code",
+      "popularityRank": 1,
+      "root": "AGENTS.md",
+      "path": "AGENTS.md",
+      "description": "When working in this repository:",
+      "bytes": 327,
+      "tokenEstimate": 82,
+      "frontmatter": {}
+    },
+    {
+      "id": "file:CLAUDE.md",
+      "name": "CLAUDE",
+      "normalizedName": "claude",
+      "label": "CLAUDE",
+      "kind": "skill-doc",
+      "providers": [
+        "claude-code"
+      ],
+      "provider": "claude-code",
+      "providerNames": [
+        "Claude Code"
+      ],
+      "providerName": "Claude Code",
+      "popularityRank": 3,
+      "root": "CLAUDE.md",
+      "path": "CLAUDE.md",
+      "description": "Claude Code should treat `.agents/skills` as canonical for this example.",
+      "bytes": 222,
+      "tokenEstimate": 56,
+      "frontmatter": {}
+    },
+    {
+      "id": "file:kilo.jsonc",
+      "name": "kilo",
+      "normalizedName": "kilo",
+      "label": "kilo",
+      "kind": "skill-doc",
+      "providers": [
+        "kilo-code"
+      ],
+      "provider": "kilo-code",
+      "providerNames": [
+        "Kilo Code"
+      ],
+      "providerName": "Kilo Code",
+      "popularityRank": 6,
+      "root": "kilo.jsonc",
+      "path": "kilo.jsonc",
+      "description": "{",
+      "bytes": 73,
+      "tokenEstimate": 19,
+      "frontmatter": {}
+    },
+    {
+      "id": "script:.agents/skills/auth-qa/scripts/ensure-auth-state.mjs",
+      "name": "ensure-auth-state.mjs",
+      "normalizedName": "ensure-auth-state-mjs",
+      "label": "ensure-auth-state.mjs",
+      "kind": "helper-script",
+      "providers": [
+        "helper"
+      ],
+      "provider": "helper",
+      "providerNames": [
+        "Helper Script"
+      ],
+      "providerName": "Helper Script",
+      "popularityRank": 999,
+      "root": ".agents/skills/auth-qa/scripts",
+      "path": ".agents/skills/auth-qa/scripts/ensure-auth-state.mjs",
+      "description": "Helper script referenced by a skill.",
+      "bytes": 107,
+      "tokenEstimate": 27,
+      "frontmatter": {}
+    },
+    {
+      "id": "script:.agents/skills/browser-qa/scripts/run-browser-smoke.mjs",
+      "name": "run-browser-smoke.mjs",
+      "normalizedName": "run-browser-smoke-mjs",
+      "label": "run-browser-smoke.mjs",
+      "kind": "helper-script",
+      "providers": [
+        "helper"
+      ],
+      "provider": "helper",
+      "providerNames": [
+        "Helper Script"
+      ],
+      "providerName": "Helper Script",
+      "popularityRank": 999,
+      "root": ".agents/skills/browser-qa/scripts",
+      "path": ".agents/skills/browser-qa/scripts/run-browser-smoke.mjs",
+      "description": "Helper script referenced by a skill.",
+      "bytes": 69,
+      "tokenEstimate": 18,
+      "frontmatter": {}
+    },
+    {
+      "id": "script:.agents/skills/product-requirements/scripts/check-acceptance.mjs",
+      "name": "check-acceptance.mjs",
+      "normalizedName": "check-acceptance-mjs",
+      "label": "check-acceptance.mjs",
+      "kind": "helper-script",
+      "providers": [
+        "helper"
+      ],
+      "provider": "helper",
+      "providerNames": [
+        "Helper Script"
+      ],
+      "providerName": "Helper Script",
+      "popularityRank": 999,
+      "root": ".agents/skills/product-requirements/scripts",
+      "path": ".agents/skills/product-requirements/scripts/check-acceptance.mjs",
+      "description": "Helper script referenced by a skill.",
+      "bytes": 104,
+      "tokenEstimate": 26,
+      "frontmatter": {}
+    },
+    {
+      "id": "script:.agents/skills/release-gate/scripts/release-preflight.sh",
+      "name": "release-preflight.sh",
+      "normalizedName": "release-preflight-sh",
+      "label": "release-preflight.sh",
+      "kind": "helper-script",
+      "providers": [
+        "helper"
+      ],
+      "provider": "helper",
+      "providerNames": [
+        "Helper Script"
+      ],
+      "providerName": "Helper Script",
+      "popularityRank": 999,
+      "root": ".agents/skills/release-gate/scripts",
+      "path": ".agents/skills/release-gate/scripts/release-preflight.sh",
+      "description": "Helper script referenced by a skill.",
+      "bytes": 66,
+      "tokenEstimate": 17,
+      "frontmatter": {}
+    },
+    {
+      "id": "script:.agents/skills/review-gate/scripts/diff-risk-check.mjs",
+      "name": "diff-risk-check.mjs",
+      "normalizedName": "diff-risk-check-mjs",
+      "label": "diff-risk-check.mjs",
+      "kind": "helper-script",
+      "providers": [
+        "helper"
+      ],
+      "provider": "helper",
+      "providerNames": [
+        "Helper Script"
+      ],
+      "providerName": "Helper Script",
+      "popularityRank": 999,
+      "root": ".agents/skills/review-gate/scripts",
+      "path": ".agents/skills/review-gate/scripts/diff-risk-check.mjs",
+      "description": "Helper script referenced by a skill.",
+      "bytes": 62,
+      "tokenEstimate": 16,
+      "frontmatter": {}
+    },
+    {
+      "id": "script:scripts/release/legacy-smoke.sh",
+      "name": "legacy-smoke.sh",
+      "normalizedName": "legacy-smoke-sh",
+      "label": "legacy-smoke.sh",
+      "kind": "missing-helper",
+      "providers": [
+        "helper"
+      ],
+      "provider": "helper",
+      "providerNames": [
+        "Helper Script"
+      ],
+      "providerName": "Helper Script",
+      "popularityRank": 999,
+      "root": "scripts/release",
+      "path": "scripts/release/legacy-smoke.sh",
+      "description": "Referenced helper script was not found.",
+      "bytes": 0,
+      "tokenEstimate": 0,
+      "frontmatter": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-2",
+      "source": ".agents/skills:auth-qa/SKILL.md",
+      "target": ".agents/skills:browser-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-3",
+      "source": ".agents/skills:auth-qa/SKILL.md",
+      "target": ".agents/skills:review-gate/SKILL.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-1",
+      "source": ".agents/skills:auth-qa/SKILL.md",
+      "target": "script:.agents/skills/auth-qa/scripts/ensure-auth-state.mjs",
+      "type": "uses-helper",
+      "label": "uses helper",
+      "evidence": ""
+    },
+    {
+      "id": "edge-5",
+      "source": ".agents/skills:browser-qa/SKILL.md",
+      "target": ".agents/skills:auth-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-4",
+      "source": ".agents/skills:browser-qa/SKILL.md",
+      "target": "script:.agents/skills/browser-qa/scripts/run-browser-smoke.mjs",
+      "type": "uses-helper",
+      "label": "uses helper",
+      "evidence": ""
+    },
+    {
+      "id": "edge-6",
+      "source": ".agents/skills:implementation-workflow/SKILL.md",
+      "target": ".agents/skills:auth-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-7",
+      "source": ".agents/skills:implementation-workflow/SKILL.md",
+      "target": ".agents/skills:product-requirements/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-8",
+      "source": ".agents/skills:implementation-workflow/SKILL.md",
+      "target": ".agents/skills:release-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-9",
+      "source": ".agents/skills:implementation-workflow/SKILL.md",
+      "target": ".agents/skills:review-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-10",
+      "source": ".agents/skills:implementation-workflow/SKILL.md",
+      "target": ".claude/skills:release-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-12",
+      "source": ".agents/skills:product-requirements/SKILL.md",
+      "target": ".agents/skills:implementation-workflow/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-11",
+      "source": ".agents/skills:product-requirements/SKILL.md",
+      "target": "script:.agents/skills/product-requirements/scripts/check-acceptance.mjs",
+      "type": "uses-helper",
+      "label": "uses helper",
+      "evidence": ""
+    },
+    {
+      "id": "edge-14",
+      "source": ".agents/skills:release-gate/SKILL.md",
+      "target": ".agents/skills:review-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-15",
+      "source": ".agents/skills:release-gate/SKILL.md",
+      "target": ".agents/skills:rollback-runbook/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-16",
+      "source": ".agents/skills:release-gate/SKILL.md",
+      "target": ".claude/skills:release-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-13",
+      "source": ".agents/skills:release-gate/SKILL.md",
+      "target": "script:.agents/skills/release-gate/scripts/release-preflight.sh",
+      "type": "uses-helper",
+      "label": "uses helper",
+      "evidence": ""
+    },
+    {
+      "id": "edge-18",
+      "source": ".agents/skills:review-gate/SKILL.md",
+      "target": ".agents/skills:auth-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-19",
+      "source": ".agents/skills:review-gate/SKILL.md",
+      "target": ".agents/skills:product-requirements/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-20",
+      "source": ".agents/skills:review-gate/SKILL.md",
+      "target": ".agents/skills:release-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-21",
+      "source": ".agents/skills:review-gate/SKILL.md",
+      "target": ".agents/skills:rollback-runbook/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-22",
+      "source": ".agents/skills:review-gate/SKILL.md",
+      "target": ".claude/skills:release-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-17",
+      "source": ".agents/skills:review-gate/SKILL.md",
+      "target": "script:.agents/skills/review-gate/scripts/diff-risk-check.mjs",
+      "type": "uses-helper",
+      "label": "uses helper",
+      "evidence": ""
+    },
+    {
+      "id": "edge-23",
+      "source": ".agents/skills:rollback-runbook/SKILL.md",
+      "target": ".agents/skills:release-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-24",
+      "source": ".agents/skills:rollback-runbook/SKILL.md",
+      "target": ".claude/skills:release-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-25",
+      "source": ".claude/skills:release-gate/SKILL.md",
+      "target": ".agents/skills:release-gate/SKILL.md",
+      "type": "wraps",
+      "label": "wraps",
+      "evidence": ""
+    },
+    {
+      "id": "edge-26",
+      "source": ".claude/skills:release-gate/SKILL.md",
+      "target": "script:scripts/release/legacy-smoke.sh",
+      "type": "uses-helper",
+      "label": "uses helper",
+      "evidence": ""
+    },
+    {
+      "id": "edge-27",
+      "source": ".clinerules:invite-flow.md",
+      "target": ".agents/skills:auth-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-28",
+      "source": ".clinerules:invite-flow.md",
+      "target": ".agents/skills:browser-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-29",
+      "source": ".clinerules:invite-flow.md",
+      "target": ".agents/skills:implementation-workflow/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-30",
+      "source": ".clinerules:invite-flow.md",
+      "target": ".agents/skills:review-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-31",
+      "source": ".cursor/rules:invite-flow.mdc",
+      "target": ".agents/skills:auth-qa/SKILL.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-32",
+      "source": ".cursor/rules:invite-flow.mdc",
+      "target": ".agents/skills:implementation-workflow/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-33",
+      "source": ".cursor/rules:invite-flow.mdc",
+      "target": ".agents/skills:product-requirements/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-34",
+      "source": ".cursor/rules:invite-flow.mdc",
+      "target": ".agents/skills:review-gate/SKILL.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-48",
+      "source": ".github/instructions:review.instructions.md",
+      "target": ".agents/skills:release-gate/SKILL.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-49",
+      "source": ".github/instructions:review.instructions.md",
+      "target": ".agents/skills:review-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-50",
+      "source": ".github/instructions:review.instructions.md",
+      "target": ".claude/skills:release-gate/SKILL.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-51",
+      "source": ".github/prompts:write-tests.prompt.md",
+      "target": ".agents/skills:auth-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-52",
+      "source": ".github/prompts:write-tests.prompt.md",
+      "target": ".agents/skills:browser-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-53",
+      "source": ".github/prompts:write-tests.prompt.md",
+      "target": ".agents/skills:implementation-workflow/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-54",
+      "source": ".kilo/rules:invite-flow.md",
+      "target": ".agents/skills:auth-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-55",
+      "source": ".kilo/rules:invite-flow.md",
+      "target": ".agents/skills:browser-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-56",
+      "source": ".kilo/rules:invite-flow.md",
+      "target": ".agents/skills:implementation-workflow/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-57",
+      "source": ".kilo/rules:invite-flow.md",
+      "target": ".agents/skills:release-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-58",
+      "source": ".kilo/rules:invite-flow.md",
+      "target": ".agents/skills:review-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-59",
+      "source": ".kilo/rules:invite-flow.md",
+      "target": ".claude/skills:release-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-35",
+      "source": "file:.cursorrules",
+      "target": ".agents/skills:auth-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-36",
+      "source": "file:.cursorrules",
+      "target": ".agents/skills:browser-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-37",
+      "source": "file:.cursorrules",
+      "target": ".agents/skills:review-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-38",
+      "source": "file:.github/copilot-instructions.md",
+      "target": ".agents/skills:auth-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-39",
+      "source": "file:.github/copilot-instructions.md",
+      "target": ".agents/skills:browser-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-40",
+      "source": "file:.github/copilot-instructions.md",
+      "target": ".agents/skills:implementation-workflow/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-41",
+      "source": "file:.github/copilot-instructions.md",
+      "target": ".agents/skills:product-requirements/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-42",
+      "source": "file:.github/copilot-instructions.md",
+      "target": ".agents/skills:release-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-43",
+      "source": "file:.github/copilot-instructions.md",
+      "target": ".agents/skills:review-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-44",
+      "source": "file:.github/copilot-instructions.md",
+      "target": ".claude/skills:release-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-45",
+      "source": "file:.github/copilot-instructions.md",
+      "target": ".clinerules:invite-flow.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-46",
+      "source": "file:.github/copilot-instructions.md",
+      "target": ".cursor/rules:invite-flow.mdc",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-47",
+      "source": "file:.github/copilot-instructions.md",
+      "target": ".kilo/rules:invite-flow.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-60",
+      "source": "file:AGENTS.md",
+      "target": ".agents/skills:auth-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-61",
+      "source": "file:AGENTS.md",
+      "target": ".agents/skills:browser-qa/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-62",
+      "source": "file:AGENTS.md",
+      "target": ".agents/skills:implementation-workflow/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-63",
+      "source": "file:AGENTS.md",
+      "target": ".agents/skills:product-requirements/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-64",
+      "source": "file:AGENTS.md",
+      "target": ".agents/skills:release-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-65",
+      "source": "file:AGENTS.md",
+      "target": ".agents/skills:review-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-66",
+      "source": "file:AGENTS.md",
+      "target": ".claude/skills:release-gate/SKILL.md",
+      "type": "calls",
+      "label": "calls",
+      "evidence": ""
+    },
+    {
+      "id": "edge-67",
+      "source": "file:CLAUDE.md",
+      "target": ".agents/skills:auth-qa/SKILL.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-68",
+      "source": "file:CLAUDE.md",
+      "target": ".agents/skills:browser-qa/SKILL.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-69",
+      "source": "file:CLAUDE.md",
+      "target": ".agents/skills:implementation-workflow/SKILL.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-70",
+      "source": "file:CLAUDE.md",
+      "target": ".agents/skills:product-requirements/SKILL.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-71",
+      "source": "file:CLAUDE.md",
+      "target": ".agents/skills:release-gate/SKILL.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-72",
+      "source": "file:CLAUDE.md",
+      "target": ".agents/skills:review-gate/SKILL.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    },
+    {
+      "id": "edge-73",
+      "source": "file:CLAUDE.md",
+      "target": ".claude/skills:release-gate/SKILL.md",
+      "type": "references",
+      "label": "references",
+      "evidence": ""
+    }
+  ],
+  "issues": [
+    {
+      "severity": "error",
+      "type": "legacy-release-smoke",
+      "message": "Release wrapper points to a retired smoke script.",
+      "paths": [
+        ".claude/skills/release-gate/SKILL.md"
+      ]
+    },
+    {
+      "severity": "error",
+      "type": "missing-helper",
+      "message": "Referenced helper does not exist: scripts/release/legacy-smoke.sh",
+      "paths": [
+        "scripts/release/legacy-smoke.sh"
+      ]
+    },
+    {
+      "severity": "warn",
+      "type": "old-test-user",
+      "message": "Old shared QA user reference should be removed.",
+      "paths": [
+        ".claude/skills/release-gate/SKILL.md"
+      ]
+    }
+  ],
+  "contentHash": "eed0a41b6bd6"
+}

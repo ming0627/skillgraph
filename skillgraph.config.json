@@ -1,6 +1,15 @@
 {
   "$schema": "./schema/skillgraph.schema.json",
-  "roots": [".agents/skills", ".claude/skills"],
+  "providers": [
+    "github-copilot",
+    "cursor",
+    "claude-code",
+    "openai-codex",
+    "cline",
+    "kilo-code",
+    "agent-skills"
+  ],
+  "roots": [],
   "outDir": "docs/skills",
   "canonicalRoots": [".agents/skills"],
   "wrapperRoots": [".claude/skills"],

@@ -1,0 +1,4 @@
+{
+  // Kilo Code project instructions.
+  "rules": [".kilo/rules/*.md"]
+}

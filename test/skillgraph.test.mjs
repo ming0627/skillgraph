@@ -119,6 +119,24 @@ cd apps/web && node scripts/validate-config.cjs
     assert.equal(helper.kind, 'helper-script');
     assert.ok(!graph.issues.some((issue) => issue.type === 'missing-helper'));
   }));
+
+  it('assigns shared instruction files to multiple providers', () => withFixture((root) => {
+    writeFixture(root, 'AGENTS.md', 'Use release-gate before final handoff.\n');
+    writeFixture(root, '.cursor/rules/release.mdc', `---
+description: Release workflow
+---
+Use release-gate.
+`);
+
+    const graph = buildSkillGraph({ rootDir: root });
+    const agents = graph.nodes.find((node) => node.path === 'AGENTS.md');
+    const cursorRule = graph.nodes.find((node) => node.path === '.cursor/rules/release.mdc');
+
+    assert.ok(agents.providerNames.includes('GitHub Copilot'));
+    assert.ok(agents.providerNames.includes('OpenAI Codex'));
+    assert.ok(agents.providerNames.includes('Cursor'));
+    assert.equal(cursorRule.providerName, 'Cursor');
+  }));
 });
 
 describe('generateMermaid', () => {

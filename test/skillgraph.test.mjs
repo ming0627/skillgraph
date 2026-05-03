@@ -6,6 +6,7 @@ import { describe, it } from 'node:test';
 
 import {
   buildSkillGraph,
+  generateHtml,
   generateMermaid,
   loadConfig,
   parseFrontmatter,
@@ -169,6 +170,26 @@ name: b
 `);
     const graph = buildSkillGraph({ rootDir: root });
     assert.match(generateMermaid(graph), /flowchart LR/);
+  }));
+});
+
+describe('generateHtml', () => {
+  it('renders the interactive explorer controls', () => withFixture((root) => {
+    writeFixture(root, '.agents/skills/a/SKILL.md', `---
+name: a
+---
+Use b.
+`);
+    writeFixture(root, '.agents/skills/b/SKILL.md', `---
+name: b
+---
+# B
+`);
+    const html = generateHtml(buildSkillGraph({ rootDir: root }));
+    assert.match(html, /Interactive skill map/);
+    assert.match(html, /id="graphSvg"/);
+    assert.match(html, /id="provider"/);
+    assert.match(html, /Fit all/);
   }));
 });
 

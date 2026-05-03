@@ -10,6 +10,7 @@
     "bin",
     "src",
     "schema",
+    "docs/assets",
     "README.md",
     "LICENSE"
   ],

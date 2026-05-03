@@ -740,67 +740,287 @@ export function generateHtml(graph) {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Skillgraph</title>
   <style>
-    :root { color-scheme: light; --ink:#17201b; --muted:#5f6b63; --line:#d8ded8; --paper:#faf9f4; --panel:#fffefb; --blue:#2563eb; --amber:#d97706; --green:#16a34a; }
-    body { margin:0; font:14px/1.45 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color:var(--ink); background:var(--paper); }
-    header { padding:18px 24px; border-bottom:1px solid var(--line); background:var(--panel); position:sticky; top:0; z-index:2; }
-    h1 { margin:0 0 8px; font-size:22px; }
-    .meta { color:var(--muted); display:flex; gap:14px; flex-wrap:wrap; }
-    .controls { margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; }
-    input, select { min-height:36px; border:1px solid var(--line); border-radius:8px; padding:0 10px; background:white; }
-    main { display:grid; grid-template-columns:minmax(0, 1fr) 360px; gap:18px; padding:18px; }
-    #nodes { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:12px; align-content:start; }
-    .node { text-align:left; border:1px solid var(--line); background:var(--panel); border-radius:8px; padding:12px; cursor:pointer; min-height:116px; box-shadow:0 1px 0 rgba(24,32,28,.05); }
-    .node:hover, .node.active { border-color:var(--blue); outline:2px solid rgba(37,99,235,.12); }
-    .node h2 { margin:0 0 8px; font-size:15px; }
-    .kind { display:inline-flex; min-height:22px; align-items:center; border-radius:999px; padding:0 8px; font-size:12px; background:#eef2ff; color:#1e3a8a; }
-    .kind.wrapper { background:#fef3c7; color:#78350f; }
-    .kind.helper-script { background:#dcfce7; color:#14532d; }
-    .kind.skill-doc { background:#f3f4f6; color:#374151; }
-    .path, .desc { color:var(--muted); overflow-wrap:anywhere; }
-    aside { position:sticky; top:112px; align-self:start; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px; max-height:calc(100vh - 140px); overflow:auto; }
-    .edge { border-top:1px solid var(--line); padding:10px 0; }
-    .edge:first-child { border-top:0; }
-    .edge strong { color:var(--blue); }
-    .issue { border-left:3px solid var(--amber); padding:8px 10px; background:#fff7ed; margin:8px 0; }
-    @media (max-width: 900px) { main { grid-template-columns:1fr; } aside { position:static; max-height:none; } }
+    :root {
+      color-scheme: light;
+      --ink:#171a1f;
+      --muted:#667085;
+      --line:#d9dee7;
+      --paper:#f6f4ee;
+      --panel:#fffefa;
+      --blue:#2d5be3;
+      --green:#0d9488;
+      --amber:#d97706;
+      --red:#dc2626;
+      --shadow:0 12px 40px rgba(23,26,31,.10);
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      min-height:100vh;
+      color:var(--ink);
+      background:
+        linear-gradient(90deg, rgba(45,91,227,.05) 1px, transparent 1px),
+        linear-gradient(rgba(45,91,227,.04) 1px, transparent 1px),
+        var(--paper);
+      background-size:28px 28px;
+      font:14px/1.45 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input, select { font:inherit; }
+    .app { min-height:100vh; display:grid; grid-template-rows:auto minmax(0, 1fr); }
+    header {
+      position:sticky;
+      top:0;
+      z-index:5;
+      display:grid;
+      grid-template-columns:minmax(220px, 1fr) auto;
+      gap:18px;
+      padding:18px 22px;
+      border-bottom:1px solid var(--line);
+      background:rgba(255,254,250,.94);
+      backdrop-filter:blur(14px);
+    }
+    h1, h2, h3, p { margin-top:0; }
+    h1 { margin-bottom:4px; font-size:24px; letter-spacing:0; }
+    h2 { margin-bottom:10px; font-size:15px; }
+    h3 { margin-bottom:8px; font-size:13px; text-transform:uppercase; color:var(--muted); letter-spacing:.08em; }
+    .eyebrow { margin:0 0 2px; color:var(--green); font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.09em; }
+    .lede { max-width:720px; margin:0; color:var(--muted); }
+    .metrics { display:flex; gap:8px; flex-wrap:wrap; align-content:start; justify-content:flex-end; }
+    .metric { min-width:86px; padding:9px 11px; border:1px solid var(--line); border-radius:8px; background:white; box-shadow:0 1px 0 rgba(23,26,31,.04); }
+    .metric strong { display:block; font-size:18px; line-height:1.05; }
+    .metric span { color:var(--muted); font-size:12px; }
+    .workspace {
+      display:grid;
+      grid-template-columns:290px minmax(0, 1fr) 350px;
+      gap:14px;
+      min-height:0;
+      padding:14px;
+    }
+    .panel {
+      min-width:0;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:var(--panel);
+      box-shadow:var(--shadow);
+    }
+    .left, .right { display:flex; flex-direction:column; height:calc(100vh - 164px); min-height:560px; overflow:hidden; }
+    .panel-head { padding:14px; border-bottom:1px solid var(--line); background:linear-gradient(180deg, #fffefa, #f9faf6); }
+    .filters { display:grid; gap:9px; }
+    .filters input, .filters select {
+      width:100%;
+      min-height:38px;
+      border:1px solid var(--line);
+      border-radius:7px;
+      padding:0 10px;
+      background:white;
+      color:var(--ink);
+    }
+    .node-list, .issue-list { overflow:auto; padding:10px; }
+    .node-list { display:grid; gap:8px; }
+    .node-row {
+      width:100%;
+      min-height:70px;
+      text-align:left;
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:9px 10px;
+      background:white;
+      color:var(--ink);
+      cursor:pointer;
+    }
+    .node-row:hover, .node-row.active { border-color:var(--blue); outline:2px solid rgba(45,91,227,.12); }
+    .row-title { display:block; margin-bottom:4px; font-weight:750; overflow-wrap:anywhere; }
+    .row-meta, .path, .muted { color:var(--muted); font-size:12px; overflow-wrap:anywhere; }
+    .map-panel { position:relative; display:grid; grid-template-rows:auto minmax(0, 1fr); height:calc(100vh - 164px); min-height:560px; overflow:hidden; }
+    .map-toolbar {
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px;
+      border-bottom:1px solid var(--line);
+      background:#fffefa;
+    }
+    .tool-group { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .tool-button {
+      min-height:34px;
+      border:1px solid var(--line);
+      border-radius:7px;
+      padding:0 10px;
+      background:white;
+      color:var(--ink);
+      cursor:pointer;
+    }
+    .tool-button:hover { border-color:var(--blue); color:var(--blue); }
+    .map-canvas { min-width:0; min-height:0; height:100%; overflow:hidden; position:relative; background:linear-gradient(180deg, #fbfcff, #f7f4eb); }
+    #graphSvg { display:block; width:100%; height:100%; cursor:grab; }
+    #graphSvg.dragging { cursor:grabbing; }
+    .edge-path { fill:none; stroke:#9aa4b2; stroke-width:1.6; opacity:.74; }
+    .edge-path.calls { stroke:var(--blue); stroke-width:2.2; }
+    .edge-path.wraps { stroke:var(--amber); stroke-width:2.2; }
+    .edge-path.uses-helper { stroke:var(--green); stroke-width:2.2; }
+    .edge-path.references { stroke-dasharray:5 4; opacity:.42; }
+    .edge-path.dim, .node-g.dim { opacity:.12; }
+    .edge-label { fill:#475467; font-size:11px; paint-order:stroke; stroke:#fffefa; stroke-width:4px; stroke-linejoin:round; }
+    .node-rect { fill:white; stroke:#bac4d3; stroke-width:1.3; rx:8; filter:url(#cardShadow); }
+    .node-g.canonical-skill .node-rect { stroke:var(--blue); fill:#eef4ff; }
+    .node-g.wrapper .node-rect { stroke:var(--amber); fill:#fff7ed; }
+    .node-g.skill .node-rect { stroke:var(--green); fill:#ecfdf5; }
+    .node-g.helper-script .node-rect { stroke:#16a34a; fill:#f0fdf4; }
+    .node-g.missing-helper .node-rect { stroke:var(--red); fill:#fef2f2; }
+    .node-g.issue .node-rect { stroke:var(--red); stroke-width:2.3; }
+    .node-g.selected .node-rect { stroke:#111827; stroke-width:2.5; }
+    .node-title { fill:#111827; font-size:13px; font-weight:760; }
+    .node-subtitle { fill:#667085; font-size:10.5px; }
+    .node-kind { fill:#344054; font-size:10.5px; font-weight:650; text-transform:uppercase; }
+    .legend { display:flex; gap:8px; flex-wrap:wrap; color:var(--muted); font-size:12px; }
+    .legend span { display:inline-flex; align-items:center; gap:5px; }
+    .swatch { width:10px; height:10px; border-radius:3px; background:var(--blue); }
+    .swatch.wraps { background:var(--amber); }
+    .swatch.helper { background:var(--green); }
+    .swatch.ref { background:#9aa4b2; }
+    .inspector-body { overflow:auto; padding:14px; }
+    .badge-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+    .badge { display:inline-flex; align-items:center; min-height:23px; border-radius:999px; padding:0 8px; background:#eef2ff; color:#1e3a8a; font-size:12px; font-weight:650; }
+    .badge.err { background:#fef2f2; color:#991b1b; }
+    .detail-card { padding:11px; border:1px solid var(--line); border-radius:8px; background:white; margin-bottom:10px; }
+    .edge-item, .issue {
+      border:1px solid var(--line);
+      border-left:4px solid var(--blue);
+      border-radius:8px;
+      padding:9px 10px;
+      background:white;
+      margin-bottom:8px;
+    }
+    .edge-item.wraps { border-left-color:var(--amber); }
+    .edge-item.uses-helper { border-left-color:var(--green); }
+    .edge-item.references { border-left-color:#98a2b3; }
+    .issue { border-left-color:var(--amber); }
+    .issue.error { border-left-color:var(--red); }
+    .empty { padding:20px; color:var(--muted); text-align:center; }
+    @media (max-width: 1180px) {
+      header { grid-template-columns:1fr; }
+      .metrics { justify-content:flex-start; }
+      .workspace { grid-template-columns:260px minmax(0, 1fr); }
+      .right { grid-column:1 / -1; height:420px; min-height:420px; }
+    }
+    @media (max-width: 760px) {
+      header { position:static; padding:14px; }
+      .workspace { grid-template-columns:1fr; padding:10px; }
+      .map-panel { height:620px; min-height:620px; }
+      .left { height:520px; min-height:520px; }
+      .right { height:560px; min-height:560px; }
+      .metric { min-width:72px; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Skillgraph</h1>
-    <div class="meta" id="summary"></div>
-    <div class="controls">
-      <input id="search" type="search" placeholder="Filter skills, paths, descriptions" />
-      <select id="kind"><option value="">All kinds</option></select>
-    </div>
-  </header>
-  <main>
-    <section id="nodes" aria-label="Skill graph nodes"></section>
-    <aside>
-      <h2 id="detailTitle">Select a node</h2>
-      <div id="detail"></div>
-      <h3>Issues</h3>
-      <div id="issues"></div>
-    </aside>
-  </main>
+  <div class="app">
+    <header>
+      <div>
+        <p class="eyebrow">Interactive skill map</p>
+        <h1>Skillgraph</h1>
+        <p class="lede">Explore every agent skill, provider instruction file, wrapper, helper script, dependency edge, and issue in one generated UI.</p>
+      </div>
+      <div class="metrics" id="metrics"></div>
+    </header>
+    <main class="workspace">
+      <aside class="panel left">
+        <div class="panel-head">
+          <h2>Find Skills</h2>
+          <div class="filters">
+            <input id="search" type="search" placeholder="Search skills, paths, providers" />
+            <select id="provider"><option value="">All providers</option></select>
+            <select id="kind"><option value="">All kinds</option></select>
+            <select id="edgeType"><option value="">All edge types</option></select>
+          </div>
+        </div>
+        <div class="node-list" id="nodeList" aria-label="Skill nodes"></div>
+      </aside>
+      <section class="panel map-panel" aria-label="Skill graph visualization">
+        <div class="map-toolbar">
+          <div class="tool-group">
+            <button class="tool-button" id="fit" type="button">Fit all</button>
+            <button class="tool-button" id="zoomIn" type="button">Zoom in</button>
+            <button class="tool-button" id="zoomOut" type="button">Zoom out</button>
+            <button class="tool-button" id="reset" type="button">Reset filters</button>
+          </div>
+          <div class="legend">
+            <span><i class="swatch"></i>calls</span>
+            <span><i class="swatch wraps"></i>wraps</span>
+            <span><i class="swatch helper"></i>helper</span>
+            <span><i class="swatch ref"></i>reference</span>
+          </div>
+        </div>
+        <div class="map-canvas">
+          <svg id="graphSvg" role="img" aria-label="Interactive skill dependency graph"></svg>
+        </div>
+      </section>
+      <aside class="panel right">
+        <div class="panel-head">
+          <h2 id="detailTitle">Select a skill</h2>
+          <p class="muted" id="detailSubtitle">Click a node or list item to inspect dependencies.</p>
+        </div>
+        <div class="inspector-body">
+          <div id="detail"></div>
+          <h3>Open Issues</h3>
+          <div class="issue-list" id="issues"></div>
+        </div>
+      </aside>
+    </main>
+  </div>
   <script>
     const graph = ${data};
-    const nodes = graph.nodes;
-    const edges = graph.edges;
-    let selectedId = "";
+    const nodes = graph.nodes.slice();
+    const edges = graph.edges.slice();
     const byId = new Map(nodes.map(node => [node.id, node]));
+    const issuePaths = new Set(graph.issues.flatMap(issue => issue.paths || []));
+    const state = {
+      selectedId: "",
+      query: "",
+      provider: "",
+      kind: "",
+      edgeType: "",
+      viewBox: null,
+      layout: new Map(),
+    };
     const search = document.getElementById('search');
+    const provider = document.getElementById('provider');
     const kind = document.getElementById('kind');
-    const nodeHost = document.getElementById('nodes');
+    const edgeType = document.getElementById('edgeType');
+    const nodeList = document.getElementById('nodeList');
+    const svg = document.getElementById('graphSvg');
     const detailTitle = document.getElementById('detailTitle');
+    const detailSubtitle = document.getElementById('detailSubtitle');
     const detail = document.getElementById('detail');
     const issues = document.getElementById('issues');
-    document.getElementById('summary').textContent = \`\${graph.summary.nodeCount} nodes | \${graph.summary.edgeCount} edges | \${graph.summary.issueCount} issues | hash \${graph.contentHash}\`;
+    const edgeTypes = [...new Set(edges.map(edge => edge.type))].sort();
+    document.getElementById('metrics').innerHTML = [
+      metric(graph.summary.nodeCount, 'nodes'),
+      metric(graph.summary.edgeCount, 'edges'),
+      metric(graph.summary.issueCount, 'issues'),
+      metric(graph.contentHash, 'hash')
+    ].join('');
+    for (const value of [...new Set(nodes.flatMap(node => node.providerNames || [node.providerName]))].sort()) {
+      const option = document.createElement('option');
+      option.value = value;
+      option.textContent = value;
+      provider.append(option);
+    }
     for (const value of [...new Set(nodes.map(node => node.kind))].sort()) {
       const option = document.createElement('option');
       option.value = value;
       option.textContent = value;
       kind.append(option);
+    }
+    for (const value of edgeTypes) {
+      const option = document.createElement('option');
+      option.value = value;
+      option.textContent = value;
+      edgeType.append(option);
+    }
+    function metric(value, label) {
+      return '<div class="metric"><strong>' + html(value) + '</strong><span>' + html(label) + '</span></div>';
     }
     function html(value) {
       return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
@@ -808,52 +1028,297 @@ export function generateHtml(graph) {
     function textFor(node) {
       return [node.name, node.providerName, node.kind, node.path, node.description].join(' ').toLowerCase();
     }
-    function renderNodes() {
-      const q = search.value.trim().toLowerCase();
-      const k = kind.value;
-      nodeHost.textContent = '';
+    function providerMatch(node) {
+      if (!state.provider) return true;
+      return (node.providerNames || [node.providerName]).includes(state.provider);
+    }
+    function matchesNode(node) {
+      if (state.kind && node.kind !== state.kind) return false;
+      if (!providerMatch(node)) return false;
+      if (state.query && !textFor(node).includes(state.query)) return false;
+      return true;
+    }
+    function edgeAllowed(edge) {
+      return !state.edgeType || edge.type === state.edgeType;
+    }
+    function relatedToSelection(edge) {
+      return !state.selectedId || edge.source === state.selectedId || edge.target === state.selectedId;
+    }
+    function wrapText(value, max) {
+      const words = String(value || '').split(/\\s+/);
+      const lines = [];
+      let line = '';
+      for (const word of words) {
+        const next = line ? line + ' ' + word : word;
+        if (next.length > max && line) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = next;
+        }
+      }
+      if (line) lines.push(line);
+      return lines.length ? lines.slice(0, 2) : [''];
+    }
+    function layoutGraph() {
+      const rank = new Map(nodes.map(node => [node.id, 0]));
+      const strongEdges = edges.filter(edge => edge.type !== 'references');
+      for (let pass = 0; pass < nodes.length; pass += 1) {
+        let changed = false;
+        for (const edge of strongEdges) {
+          if (!rank.has(edge.source) || !rank.has(edge.target)) continue;
+          const next = Math.min(9, (rank.get(edge.source) || 0) + 1);
+          if (next > (rank.get(edge.target) || 0)) {
+            rank.set(edge.target, next);
+            changed = true;
+          }
+        }
+        if (!changed) break;
+      }
+      const connected = new Set(strongEdges.flatMap(edge => [edge.source, edge.target]));
       for (const node of nodes) {
-        if (k && node.kind !== k) continue;
-        if (q && !textFor(node).includes(q)) continue;
+        if (!connected.has(node.id)) rank.set(node.id, Math.max(rank.get(node.id) || 0, 0));
+      }
+      const groups = new Map();
+      for (const node of nodes) {
+        const key = rank.get(node.id) || 0;
+        const list = groups.get(key) || [];
+        list.push(node);
+        groups.set(key, list);
+      }
+      const layout = new Map();
+      const columnWidth = 270;
+      const rowHeight = 100;
+      const nodeWidth = 220;
+      const nodeHeight = 72;
+      let maxX = 0;
+      let maxY = 0;
+      for (const [column, list] of [...groups.entries()].sort((a, b) => a[0] - b[0])) {
+        list.sort((a, b) => (a.popularityRank - b.popularityRank) || a.providerName.localeCompare(b.providerName) || a.name.localeCompare(b.name));
+        list.forEach((node, index) => {
+          const x = 42 + column * columnWidth;
+          const y = 42 + index * rowHeight;
+          layout.set(node.id, { x, y, width: nodeWidth, height: nodeHeight });
+          maxX = Math.max(maxX, x + nodeWidth);
+          maxY = Math.max(maxY, y + nodeHeight);
+        });
+      }
+      state.layout = layout;
+      state.bounds = { x: 0, y: 0, width: maxX + 70, height: maxY + 70 };
+      if (!state.viewBox) fitAll();
+    }
+    function setViewBox(box) {
+      state.viewBox = box;
+      svg.setAttribute('viewBox', [box.x, box.y, box.width, box.height].join(' '));
+    }
+    function fitAll() {
+      const bounds = state.bounds || { x: 0, y: 0, width: 1200, height: 800 };
+      setViewBox({ x: bounds.x, y: bounds.y, width: Math.max(640, bounds.width), height: Math.max(440, bounds.height) });
+    }
+    function zoom(factor) {
+      const box = state.viewBox || state.bounds;
+      const cx = box.x + box.width / 2;
+      const cy = box.y + box.height / 2;
+      const width = Math.max(260, box.width * factor);
+      const height = Math.max(220, box.height * factor);
+      setViewBox({ x: cx - width / 2, y: cy - height / 2, width, height });
+    }
+    function centerOnNode(id) {
+      const item = state.layout.get(id);
+      if (!item) return;
+      const box = state.viewBox || state.bounds;
+      const width = Math.min(box.width, 920);
+      const height = Math.min(box.height, 620);
+      setViewBox({
+        x: item.x + item.width / 2 - width / 2,
+        y: item.y + item.height / 2 - height / 2,
+        width,
+        height,
+      });
+    }
+    function renderList() {
+      nodeList.textContent = '';
+      const visible = nodes.filter(matchesNode);
+      if (!visible.length) {
+        nodeList.innerHTML = '<div class="empty">No skills match these filters.</div>';
+        return;
+      }
+      for (const node of visible) {
         const button = document.createElement('button');
-        button.className = \`node \${selectedId === node.id ? 'active' : ''}\`;
-        button.innerHTML = \`<h2>\${html(node.name)}</h2><span class="kind \${html(node.kind)}">\${html(node.kind)}</span><p class="desc">\${html(node.providerName)} · \${html(node.description || '')}</p><p class="path">\${html(node.path)}</p>\`;
-        button.onclick = () => { selectedId = node.id; renderNodes(); renderDetail(); };
-        nodeHost.append(button);
+        button.type = 'button';
+        button.className = 'node-row' + (state.selectedId === node.id ? ' active' : '');
+        button.innerHTML = '<span class="row-title">' + html(node.name) + '</span><span class="row-meta">' + html(node.providerName) + ' | ' + html(node.kind) + '</span><br><span class="path">' + html(node.path) + '</span>';
+        button.onclick = () => selectNode(node.id);
+        nodeList.append(button);
+      }
+    }
+    function createSvg(tag, attrs = {}) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+      for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, value);
+      return el;
+    }
+    function renderGraph() {
+      svg.textContent = '';
+      const defs = createSvg('defs');
+      defs.innerHTML = '<filter id="cardShadow" x="-10%" y="-20%" width="130%" height="150%"><feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#111827" flood-opacity=".10"/></filter><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#667085"/></marker>';
+      svg.append(defs);
+      const edgeLayer = createSvg('g');
+      const nodeLayer = createSvg('g');
+      svg.append(edgeLayer, nodeLayer);
+      for (const edge of edges.filter(edgeAllowed)) {
+        const source = state.layout.get(edge.source);
+        const target = state.layout.get(edge.target);
+        if (!source || !target) continue;
+        const sourceNode = byId.get(edge.source);
+        const targetNode = byId.get(edge.target);
+        const visible = matchesNode(sourceNode) && matchesNode(targetNode);
+        const selected = relatedToSelection(edge);
+        const startX = source.x + source.width;
+        const startY = source.y + source.height / 2;
+        const endX = target.x;
+        const endY = target.y + target.height / 2;
+        const curve = Math.max(80, Math.abs(endX - startX) * .46);
+        const path = createSvg('path', {
+          d: 'M ' + startX + ' ' + startY + ' C ' + (startX + curve) + ' ' + startY + ', ' + (endX - curve) + ' ' + endY + ', ' + endX + ' ' + endY,
+          class: 'edge-path ' + edge.type + ((!visible || !selected) ? ' dim' : ''),
+          'marker-end': 'url(#arrow)',
+        });
+        edgeLayer.append(path);
+        if (edge.type !== 'references' && visible) {
+          const label = createSvg('text', {
+            x: (startX + endX) / 2,
+            y: (startY + endY) / 2 - 7,
+            class: 'edge-label',
+            'text-anchor': 'middle',
+          });
+          label.textContent = edge.label;
+          edgeLayer.append(label);
+        }
+      }
+      for (const node of nodes) {
+        const item = state.layout.get(node.id);
+        if (!item) continue;
+        const visible = matchesNode(node);
+        const related = !state.selectedId || state.selectedId === node.id || edges.some(edge => relatedToSelection(edge) && (edge.source === node.id || edge.target === node.id));
+        const group = createSvg('g', {
+          class: 'node-g ' + node.kind + (state.selectedId === node.id ? ' selected' : '') + (issuePaths.has(node.path) ? ' issue' : '') + ((!visible || !related) ? ' dim' : ''),
+          transform: 'translate(' + item.x + ' ' + item.y + ')',
+          tabindex: visible ? '0' : '-1',
+          role: 'button',
+        });
+        group.addEventListener('click', () => selectNode(node.id));
+        group.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') selectNode(node.id);
+        });
+        group.append(createSvg('rect', { class: 'node-rect', width: item.width, height: item.height }));
+        const title = createSvg('text', { class: 'node-title', x: 12, y: 20 });
+        wrapText(node.name, 25).forEach((line, index) => {
+          const tspan = createSvg('tspan', { x: 12, dy: index ? 15 : 0 });
+          tspan.textContent = line;
+          title.append(tspan);
+        });
+        const subtitle = createSvg('text', { class: 'node-subtitle', x: 12, y: 52 });
+        subtitle.textContent = node.providerName.length > 34 ? node.providerName.slice(0, 31) + '...' : node.providerName;
+        const kindLabel = createSvg('text', { class: 'node-kind', x: 12, y: 66 });
+        kindLabel.textContent = node.kind;
+        group.append(title, subtitle, kindLabel);
+        nodeLayer.append(group);
       }
     }
     function renderDetail() {
-      const node = byId.get(selectedId);
+      const node = byId.get(state.selectedId);
       if (!node) {
-        detailTitle.textContent = 'Select a node';
-        detail.innerHTML = '<p class="path">Click a skill to see incoming and outgoing workflow edges.</p>';
+        detailTitle.textContent = 'Select a skill';
+        detailSubtitle.textContent = 'Click a node or list item to inspect dependencies.';
+        detail.innerHTML = '<div class="empty">The map contains ' + html(nodes.length) + ' nodes across ' + html(graph.providers.length) + ' provider presets.</div>';
         return;
       }
       detailTitle.textContent = node.name;
+      detailSubtitle.textContent = node.path;
       const related = edges.filter(edge => edge.source === node.id || edge.target === node.id);
-      detail.innerHTML = \`
-        <p><span class="kind \${html(node.kind)}">\${html(node.kind)}</span></p>
-        <p class="path">\${html(node.providerName)}</p>
-        <p class="path">\${html(node.path)}</p>
-        <p>\${html(node.description || '')}</p>
-        <h3>Edges</h3>
-        \${related.length ? related.map(edge => {
+      const nodeIssues = graph.issues.filter(issue => (issue.paths || []).includes(node.path));
+      detail.innerHTML =
+        '<div class="badge-row">' +
+          '<span class="badge">' + html(node.kind) + '</span>' +
+          '<span class="badge">' + html(node.providerName) + '</span>' +
+          (nodeIssues.length ? '<span class="badge err">' + html(nodeIssues.length) + ' issue</span>' : '') +
+        '</div>' +
+        '<div class="detail-card"><h3>Description</h3><p>' + html(node.description || 'No description detected.') + '</p><p class="path">' + html(node.path) + '</p></div>' +
+        '<h3>Edges</h3>' +
+        (related.length ? related.map(edge => {
           const source = byId.get(edge.source)?.name || edge.source;
           const target = byId.get(edge.target)?.name || edge.target;
-          return \`<div class="edge"><strong>\${html(edge.type)}</strong><br>\${html(source)} -&gt; \${html(target)}<p class="path">\${html(edge.evidence || '')}</p></div>\`;
-        }).join('') : '<p class="path">No inferred edges.</p>'}
-      \`;
+          return '<div class="edge-item ' + html(edge.type) + '"><strong>' + html(edge.type) + '</strong><br>' + html(source) + ' -> ' + html(target) + '<p class="path">' + html(edge.evidence || '') + '</p></div>';
+        }).join('') : '<div class="empty">No inferred edges for this node.</div>');
     }
     function renderIssues() {
       issues.innerHTML = graph.issues.length
-        ? graph.issues.map(issue => \`<div class="issue"><strong>\${html(issue.severity)} | \${html(issue.type)}</strong><br>\${html(issue.message)}</div>\`).join('')
-        : '<p class="path">No issues detected.</p>';
+        ? graph.issues.map(issue => '<div class="issue ' + html(issue.severity) + '"><strong>' + html(issue.severity) + ' | ' + html(issue.type) + '</strong><br>' + html(issue.message) + '<p class="path">' + html((issue.paths || []).join(', ')) + '</p></div>').join('')
+        : '<div class="empty">No issues detected.</div>';
     }
-    search.addEventListener('input', renderNodes);
-    kind.addEventListener('change', renderNodes);
-    renderNodes();
-    renderDetail();
-    renderIssues();
+    function render() {
+      renderList();
+      renderGraph();
+      renderDetail();
+      renderIssues();
+    }
+    function selectNode(id) {
+      state.selectedId = state.selectedId === id ? "" : id;
+      render();
+      if (state.selectedId) centerOnNode(state.selectedId);
+    }
+    function resetFilters() {
+      state.query = "";
+      state.provider = "";
+      state.kind = "";
+      state.edgeType = "";
+      state.selectedId = "";
+      search.value = "";
+      provider.value = "";
+      kind.value = "";
+      edgeType.value = "";
+      render();
+      fitAll();
+    }
+    function syncFilters() {
+      state.query = search.value.trim().toLowerCase();
+      state.provider = provider.value;
+      state.kind = kind.value;
+      state.edgeType = edgeType.value;
+      render();
+    }
+    let dragStart = null;
+    svg.addEventListener('pointerdown', event => {
+      dragStart = { x: event.clientX, y: event.clientY, box: { ...state.viewBox } };
+      svg.classList.add('dragging');
+      svg.setPointerCapture(event.pointerId);
+    });
+    svg.addEventListener('pointermove', event => {
+      if (!dragStart) return;
+      const rect = svg.getBoundingClientRect();
+      const dx = (event.clientX - dragStart.x) * dragStart.box.width / rect.width;
+      const dy = (event.clientY - dragStart.y) * dragStart.box.height / rect.height;
+      setViewBox({ ...dragStart.box, x: dragStart.box.x - dx, y: dragStart.box.y - dy });
+    });
+    svg.addEventListener('pointerup', event => {
+      dragStart = null;
+      svg.classList.remove('dragging');
+      svg.releasePointerCapture(event.pointerId);
+    });
+    svg.addEventListener('wheel', event => {
+      event.preventDefault();
+      zoom(event.deltaY > 0 ? 1.12 : .88);
+    }, { passive: false });
+    search.addEventListener('input', syncFilters);
+    provider.addEventListener('change', syncFilters);
+    kind.addEventListener('change', syncFilters);
+    edgeType.addEventListener('change', syncFilters);
+    document.getElementById('fit').addEventListener('click', fitAll);
+    document.getElementById('zoomIn').addEventListener('click', () => zoom(.82));
+    document.getElementById('zoomOut').addEventListener('click', () => zoom(1.18));
+    document.getElementById('reset').addEventListener('click', resetFilters);
+    layoutGraph();
+    render();
   </script>
 </body>
 </html>
@@ -967,7 +1432,9 @@ export async function runCli(argv = process.argv) {
   const graph = buildSkillGraph({ config });
   if (args.command === 'generate') {
     writeOutputs(graph, config.outDirAbs);
-    console.log(`Wrote skillgraph artifacts: ${normalizePath(relative(config.rootDir, config.outDirAbs))}`);
+    const outDir = normalizePath(relative(config.rootDir, config.outDirAbs));
+    console.log(`Wrote skillgraph artifacts: ${outDir}`);
+    console.log(`Open UI: ${normalizePath(join(outDir, 'skillgraph.html'))}`);
     console.log(`Nodes: ${graph.summary.nodeCount} | Edges: ${graph.summary.edgeCount} | Issues: ${graph.summary.issueCount}`);
     return;
   }

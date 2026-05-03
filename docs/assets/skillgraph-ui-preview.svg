@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">Skillgraph interactive UI preview</title>
+  <desc id="desc">A preview of the generated Skillgraph HTML explorer with filters, a dependency map, issue cards, and a selected skill inspector.</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#111827" flood-opacity=".13"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#667085"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="680" fill="#f6f4ee"/>
+  <path d="M0 96H1200" stroke="#d9dee7"/>
+  <g fill="#171a1f">
+    <text x="32" y="34" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="800" letter-spacing="3" fill="#0d9488">INTERACTIVE SKILL MAP</text>
+    <text x="32" y="68" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="800">Skillgraph</text>
+    <text x="32" y="88" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" fill="#5b6680">Explore every skill, provider rule, wrapper, helper, edge, and issue from one generated HTML file.</text>
+  </g>
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <g transform="translate(826 20)">
+      <rect width="78" height="52" rx="8" fill="#fffefa" stroke="#d9dee7"/>
+      <text x="14" y="24" font-size="18" font-weight="800" fill="#171a1f">35</text>
+      <text x="14" y="42" font-size="11" fill="#667085">nodes</text>
+    </g>
+    <g transform="translate(916 20)">
+      <rect width="78" height="52" rx="8" fill="#fffefa" stroke="#d9dee7"/>
+      <text x="14" y="24" font-size="18" font-weight="800" fill="#171a1f">140</text>
+      <text x="14" y="42" font-size="11" fill="#667085">edges</text>
+    </g>
+    <g transform="translate(1006 20)">
+      <rect width="78" height="52" rx="8" fill="#fffefa" stroke="#d9dee7"/>
+      <text x="14" y="24" font-size="18" font-weight="800" fill="#171a1f">3</text>
+      <text x="14" y="42" font-size="11" fill="#667085">issues</text>
+    </g>
+    <g transform="translate(1096 20)">
+      <rect width="72" height="52" rx="8" fill="#fffefa" stroke="#d9dee7"/>
+      <text x="14" y="24" font-size="18" font-weight="800" fill="#171a1f">10</text>
+      <text x="14" y="42" font-size="11" fill="#667085">providers</text>
+    </g>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="24" y="116" width="246" height="536" rx="8" fill="#fffefa" stroke="#d9dee7"/>
+    <rect x="286" y="116" width="578" height="536" rx="8" fill="#fffefa" stroke="#d9dee7"/>
+    <rect x="880" y="116" width="296" height="536" rx="8" fill="#fffefa" stroke="#d9dee7"/>
+  </g>
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <text x="44" y="148" font-size="16" font-weight="800" fill="#171a1f">Find Skills</text>
+    <rect x="44" y="166" width="206" height="34" rx="7" fill="#fff" stroke="#d9dee7"/>
+    <text x="58" y="188" font-size="12" fill="#667085">Search skills, paths, providers</text>
+    <rect x="44" y="212" width="206" height="34" rx="7" fill="#fff" stroke="#d9dee7"/>
+    <text x="58" y="234" font-size="12" fill="#171a1f">All providers</text>
+    <rect x="44" y="258" width="206" height="34" rx="7" fill="#fff" stroke="#d9dee7"/>
+    <text x="58" y="280" font-size="12" fill="#171a1f">All kinds</text>
+    <g transform="translate(44 318)">
+      <rect width="206" height="58" rx="8" fill="#fff" stroke="#bac4d3"/>
+      <text x="12" y="22" font-size="14" font-weight="800" fill="#171a1f">auth-qa</text>
+      <text x="12" y="42" font-size="11" fill="#667085">Generic Agent Skills | canonical</text>
+    </g>
+    <g transform="translate(44 386)">
+      <rect width="206" height="58" rx="8" fill="#fff" stroke="#bac4d3"/>
+      <text x="12" y="22" font-size="14" font-weight="800" fill="#171a1f">browser-qa</text>
+      <text x="12" y="42" font-size="11" fill="#667085">Generic Agent Skills | canonical</text>
+    </g>
+    <g transform="translate(44 454)">
+      <rect width="206" height="58" rx="8" fill="#fff7ed" stroke="#d97706"/>
+      <text x="12" y="22" font-size="14" font-weight="800" fill="#171a1f">release-gate</text>
+      <text x="12" y="42" font-size="11" fill="#667085">Claude Code | wrapper</text>
+    </g>
+  </g>
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <rect x="304" y="132" width="64" height="32" rx="7" fill="#fff" stroke="#d9dee7"/>
+    <text x="322" y="153" font-size="12" fill="#171a1f">Fit all</text>
+    <rect x="378" y="132" width="76" height="32" rx="7" fill="#fff" stroke="#d9dee7"/>
+    <text x="394" y="153" font-size="12" fill="#171a1f">Zoom in</text>
+    <rect x="464" y="132" width="86" height="32" rx="7" fill="#fff" stroke="#d9dee7"/>
+    <text x="480" y="153" font-size="12" fill="#171a1f">Zoom out</text>
+    <circle cx="754" cy="148" r="5" fill="#2d5be3"/>
+    <text x="766" y="153" font-size="12" fill="#667085">calls</text>
+    <circle cx="810" cy="148" r="5" fill="#d97706"/>
+    <text x="822" y="153" font-size="12" fill="#667085">wraps</text>
+  </g>
+  <g stroke-linecap="round" marker-end="url(#arrow)">
+    <path d="M402 294 C470 294 468 248 536 248" stroke="#2d5be3" stroke-width="3" fill="none"/>
+    <path d="M648 248 C706 248 702 300 760 300" stroke="#2d5be3" stroke-width="3" fill="none"/>
+    <path d="M402 454 C488 454 450 414 536 414" stroke="#d97706" stroke-width="3" fill="none"/>
+    <path d="M648 414 C716 414 692 490 760 490" stroke="#0d9488" stroke-width="3" fill="none"/>
+    <path d="M402 540 C500 540 438 300 536 300" stroke="#9aa4b2" stroke-width="2" stroke-dasharray="6 5" fill="none"/>
+  </g>
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <g transform="translate(318 264)">
+      <rect width="84" height="60" rx="8" fill="#eef4ff" stroke="#2d5be3"/>
+      <text x="12" y="24" font-size="12" font-weight="800" fill="#171a1f">implementation</text>
+      <text x="12" y="44" font-size="10" fill="#667085">canonical</text>
+    </g>
+    <g transform="translate(536 218)">
+      <rect width="112" height="60" rx="8" fill="#eef4ff" stroke="#2d5be3"/>
+      <text x="12" y="24" font-size="12" font-weight="800" fill="#171a1f">auth-qa</text>
+      <text x="12" y="44" font-size="10" fill="#667085">canonical-skill</text>
+    </g>
+    <g transform="translate(760 270)">
+      <rect width="82" height="60" rx="8" fill="#eef4ff" stroke="#2d5be3"/>
+      <text x="12" y="24" font-size="12" font-weight="800" fill="#171a1f">browser-qa</text>
+      <text x="12" y="44" font-size="10" fill="#667085">canonical</text>
+    </g>
+    <g transform="translate(318 424)">
+      <rect width="84" height="60" rx="8" fill="#fff7ed" stroke="#d97706"/>
+      <text x="12" y="24" font-size="12" font-weight="800" fill="#171a1f">release</text>
+      <text x="12" y="44" font-size="10" fill="#667085">wrapper</text>
+    </g>
+    <g transform="translate(536 384)">
+      <rect width="112" height="60" rx="8" fill="#eef4ff" stroke="#2d5be3"/>
+      <text x="12" y="24" font-size="12" font-weight="800" fill="#171a1f">release-gate</text>
+      <text x="12" y="44" font-size="10" fill="#667085">canonical</text>
+    </g>
+    <g transform="translate(760 460)">
+      <rect width="84" height="60" rx="8" fill="#f0fdf4" stroke="#0d9488"/>
+      <text x="12" y="24" font-size="12" font-weight="800" fill="#171a1f">preflight.sh</text>
+      <text x="12" y="44" font-size="10" fill="#667085">helper</text>
+    </g>
+  </g>
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <text x="902" y="148" font-size="16" font-weight="800" fill="#171a1f">Selected Skill</text>
+    <text x="902" y="174" font-size="13" fill="#667085">release-gate wrapper</text>
+    <rect x="902" y="206" width="246" height="82" rx="8" fill="#fff" stroke="#d9dee7"/>
+    <text x="920" y="232" font-size="12" font-weight="800" fill="#344054">Edges</text>
+    <text x="920" y="256" font-size="13" fill="#171a1f">wraps - release-gate</text>
+    <text x="920" y="276" font-size="12" fill="#667085">uses helper - legacy-smoke.sh</text>
+    <text x="902" y="336" font-size="13" font-weight="800" fill="#667085" letter-spacing="2">OPEN ISSUES</text>
+    <rect x="902" y="360" width="246" height="84" rx="8" fill="#fff" stroke="#d9dee7"/>
+    <rect x="902" y="360" width="5" height="84" rx="2" fill="#dc2626"/>
+    <text x="920" y="386" font-size="13" font-weight="800" fill="#171a1f">error | missing-helper</text>
+    <text x="920" y="410" font-size="13" fill="#171a1f">Referenced helper was not found.</text>
+    <text x="920" y="430" font-size="12" fill="#667085">scripts/release/legacy-smoke.sh</text>
+  </g>
+</svg>

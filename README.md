@@ -22,8 +22,8 @@ Skillgraph makes that hidden system visible.
 
 For a repo with AI-agent instructions spread across common tool paths, Skillgraph emits:
 
-- `SKILLGRAPH.md` - GitHub-renderable Mermaid workflow map plus tables.
-- `skillgraph.html` - local interactive browser explorer.
+- `skillgraph.html` - local interactive browser explorer for the full skill map.
+- `SKILLGRAPH.md` - GitHub-renderable Mermaid summary plus tables for PR review.
 - `skillgraph.json` - machine-readable graph for CI, dashboards, or other tools.
 
 It detects:
@@ -75,6 +75,14 @@ npm test
 npm run example:generate
 open examples/release-train-drift/docs/skills/skillgraph.html
 ```
+
+## Interactive UI
+
+The main human experience is `skillgraph.html`, a self-contained explorer with search, provider filters, kind filters, edge-type filters, pan/zoom, fit-to-screen, issue highlighting, and a dependency inspector.
+
+![Skillgraph interactive UI preview](docs/assets/skillgraph-ui-preview.svg)
+
+The Mermaid in `SKILLGRAPH.md` is kept for lightweight diffs and GitHub PRs. Use the HTML explorer when you need to see the whole skill system.
 
 ## Add To A Repo
 
@@ -157,16 +165,6 @@ See [Privacy](docs/PRIVACY.md) for the recommended release checklist.
 - Build a CI gate that fails when generated skill docs drift from source.
 
 More examples are in [Use Cases](docs/USE_CASES.md).
-
-## Example Output
-
-```mermaid
-flowchart LR
-  A["implementation-workflow<br/><small>canonical-skill</small>"] -- "calls" --> B["auth-qa<br/><small>canonical-skill</small>"]
-  B -- "calls" --> C["browser-qa<br/><small>canonical-skill</small>"]
-  D["release-gate<br/><small>wrapper</small>"] -- "wraps" --> E["release-gate<br/><small>canonical-skill</small>"]
-  E -- "uses helper" --> F["release-preflight.sh<br/><small>helper-script</small>"]
-```
 
 ## Sources For Provider Paths
 

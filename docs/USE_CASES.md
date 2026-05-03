@@ -68,6 +68,8 @@ The HTML explorer provides a searchable map of:
 - path
 - description
 - incoming and outgoing edges
+- provider/kind/edge filters
+- highlighted issues and missing helpers
 
 ## 7. Public Documentation Without Private Leaks
 

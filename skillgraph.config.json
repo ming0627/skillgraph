@@ -1,0 +1,14 @@
+{
+  "$schema": "./schema/skillgraph.schema.json",
+  "roots": [".agents/skills", ".claude/skills"],
+  "outDir": "docs/skills",
+  "canonicalRoots": [".agents/skills"],
+  "wrapperRoots": [".claude/skills"],
+  "privacy": {
+    "includeEvidence": true,
+    "redactTerms": []
+  },
+  "rules": {
+    "stalePatterns": []
+  }
+}

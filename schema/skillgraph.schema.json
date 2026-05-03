@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ming0627/skillgraph/schema/skillgraph.schema.json",
+  "title": "Skillgraph configuration",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "roots": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Directories that contain skill markdown files."
+    },
+    "outDir": {
+      "type": "string",
+      "description": "Directory where SKILLGRAPH.md, skillgraph.json, and skillgraph.html are written."
+    },
+    "canonicalRoots": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Roots treated as canonical skill sources."
+    },
+    "wrapperRoots": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Roots treated as mirror/wrapper skill sources."
+    },
+    "exclude": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "privacy": {
+      "type": "object",
+      "properties": {
+        "includeEvidence": { "type": "boolean" },
+        "redactTerms": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "rules": {
+      "type": "object",
+      "properties": {
+        "stalePatterns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "pattern": { "type": "string" },
+              "regex": { "type": "string" },
+              "flags": { "type": "string" },
+              "severity": { "enum": ["info", "warn", "error"] },
+              "message": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

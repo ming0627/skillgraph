@@ -1,0 +1,4 @@
+test/
+examples/*/docs/skills/
+docs/private-leak-terms.txt
+.github/

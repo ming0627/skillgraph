@@ -1,0 +1,6 @@
+# Example forbidden terms for public-repo hygiene.
+# Replace these with your own private project names, domains, emails, and tokens.
+DO_NOT_COMMIT_REAL_PROJECT_NAME
+DO_NOT_COMMIT_REAL_INTERNAL_DOMAIN
+DO_NOT_COMMIT_REAL_PERSONAL_EMAIL
+DO_NOT_COMMIT_REAL_TEST_ACCOUNT

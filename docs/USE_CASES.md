@@ -14,7 +14,7 @@ Skillgraph gives you:
 
 ## 2. Multi-Tool Release Train
 
-Problem: Copilot, Cursor, Claude Code, Codex, Cline, and Kilo Code each have their own instruction files for the same feature release process.
+Problem: Copilot, Cursor, Claude Code, Codex, Cline, Augment Code, Kilo Code, Google Antigravity, and Factory AI each have their own instruction files for the same feature release process.
 
 Skillgraph shows:
 

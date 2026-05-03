@@ -5,7 +5,7 @@ Skillgraph reads `skillgraph.config.json` from the target repo root by default.
 ```json
 {
   "$schema": "https://raw.githubusercontent.com/ming0627/skillgraph/main/schema/skillgraph.schema.json",
-  "providers": ["github-copilot", "cursor", "claude-code", "openai-codex", "cline", "kilo-code", "agent-skills"],
+  "providers": ["github-copilot", "cursor", "claude-code", "openai-codex", "cline", "augment-code", "kilo-code", "google-antigravity", "factory-ai", "agent-skills"],
   "roots": [],
   "outDir": "docs/skills",
   "canonicalRoots": [".agents/skills"],
@@ -33,8 +33,11 @@ Provider presets to scan. Default display order is:
 3. Claude Code
 4. OpenAI Codex
 5. Cline
-6. Kilo Code
-7. Generic agent skills
+6. Augment Code
+7. Kilo Code
+8. Google Antigravity
+9. Factory AI
+10. Generic agent skills
 
 Shared files such as `AGENTS.md` can be associated with more than one provider.
 

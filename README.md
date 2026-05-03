@@ -2,13 +2,13 @@
 
 Skillgraph maps AI agent instructions, skills, wrapper docs, helper scripts, and workflow dependencies into a graph you can read, diff, and check in CI.
 
-It is built for teams that have moved beyond one prompt file and now maintain Copilot instructions, Cursor rules, Claude Code skills, Codex `AGENTS.md`, Cline rules, Kilo Code rules, QA flows, release gates, and local helper scripts that quietly depend on each other.
+It is built for teams that have moved beyond one prompt file and now maintain Copilot instructions, Cursor rules, Claude Code skills, Codex `AGENTS.md`, Cline rules, Augment Code rules, Kilo Code rules, Google Antigravity workflows, Factory droids, QA flows, release gates, and local helper scripts that quietly depend on each other.
 
 ## The Pain
 
 Agent skill systems scale fast, then become hard to reason about:
 
-- Copilot, Cursor, Claude Code, Codex, Cline, and Kilo Code each have a slightly different copy of the same release workflow.
+- Copilot, Cursor, Claude Code, Codex, Cline, Augment Code, Kilo Code, Google Antigravity, and Factory AI each have a slightly different copy of the same release workflow.
 - Implementation instructions say "ready" before auth QA is complete.
 - A wrapper skill points to canonical instructions, but nobody knows whether it is stale.
 - Multiple rule files repeat the same checklist with slightly different wording.
@@ -49,8 +49,11 @@ Default provider presets are sorted for display by broad public adoption and eco
 | 3 | Claude Code | `CLAUDE.md`, `.claude/CLAUDE.md`, `.claude/skills`, `.claude/commands`, `.claude/agents`, `.claude/rules` |
 | 4 | OpenAI Codex | `AGENTS.md`, `AGENTS.override.md` |
 | 5 | Cline | `.clinerules`, `.cursorrules`, `.windsurfrules`, `AGENTS.md`, `memory-bank` |
-| 6 | Kilo Code | `kilo.jsonc`, `kilo.json`, `.kilo/rules`, `.kilocode/rules`, `.kilocode/rules-code`, `.kilocoderules`, `AGENTS.md` |
-| 7 | Generic agent skills | `.agents/skills` |
+| 6 | Augment Code | `.augment/rules`, `.augment/agents`, `.augment-guidelines`, `.augment/code_review_guidelines.yaml`, `AGENTS.md`, `CLAUDE.md` |
+| 7 | Kilo Code | `kilo.jsonc`, `kilo.json`, `.kilo/rules`, `.kilocode/rules`, `.kilocode/rules-code`, `.kilocoderules`, `AGENTS.md` |
+| 8 | Google Antigravity | `GEMINI.md`, `AGENTS.md`, `.agent/rules`, `.agent/workflows`, `.agents/rules`, `.agents/workflows` |
+| 9 | Factory AI | `AGENTS.md`, `.factory/rules`, `.factory/skills`, `.factory/commands`, `.factory/droids` |
+| 10 | Generic agent skills | `.agents/skills` |
 
 Shared files such as `AGENTS.md` receive multiple provider badges instead of being owned by one tool.
 
@@ -80,7 +83,7 @@ Create `skillgraph.config.json`:
 ```json
 {
   "$schema": "https://raw.githubusercontent.com/ming0627/skillgraph/main/schema/skillgraph.schema.json",
-  "providers": ["github-copilot", "cursor", "claude-code", "openai-codex", "cline", "kilo-code", "agent-skills"],
+  "providers": ["github-copilot", "cursor", "claude-code", "openai-codex", "cline", "augment-code", "kilo-code", "google-antigravity", "factory-ai", "agent-skills"],
   "roots": [],
   "outDir": "docs/skills",
   "canonicalRoots": [".agents/skills"],
@@ -172,7 +175,14 @@ flowchart LR
 - [Claude Code memory and project instructions](https://docs.anthropic.com/en/docs/claude-code/memory)
 - [OpenAI Codex AGENTS.md](https://developers.openai.com/codex/guides/agents-md)
 - [Cline rules](https://docs.cline.bot/customization/cline-rules)
+- [Augment Code rules and guidelines](https://docs.augmentcode.com/setup-augment/guidelines)
+- [Augment Code review guidelines](https://docs.augmentcode.com/codereview/review-guidelines)
 - [Kilo Code custom rules](https://kilo.ai/docs/customize/custom-rules)
+- [Google Antigravity rules and workflows](https://antigravity.google/docs/rules-workflows)
+- [Factory AGENTS.md](https://docs.factory.ai/cli/configuration/agents-md)
+- [Factory rules and conventions](https://docs.factory.ai/guides/power-user/rules-conventions)
+- [Factory skills](https://docs.factory.ai/cli/configuration/skills)
+- [Factory custom droids](https://docs.factory.ai/cli/configuration/custom-droids)
 
 ## Commands
 

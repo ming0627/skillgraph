@@ -1,0 +1,3 @@
+# Legacy Augment Guidelines
+
+For invite changes, use implementation-workflow, auth-qa, browser-qa, and review-gate.

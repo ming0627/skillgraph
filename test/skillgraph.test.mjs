@@ -127,15 +127,31 @@ description: Release workflow
 ---
 Use release-gate.
 `);
+    writeFixture(root, '.augment/rules/release.md', `---
+description: Augment release workflow
+---
+Use release-gate.
+`);
+    writeFixture(root, 'GEMINI.md', 'Use release-gate for Antigravity changes.\n');
+    writeFixture(root, '.factory/rules/release.md', 'Use release-gate for Factory Droid changes.\n');
 
     const graph = buildSkillGraph({ rootDir: root });
     const agents = graph.nodes.find((node) => node.path === 'AGENTS.md');
     const cursorRule = graph.nodes.find((node) => node.path === '.cursor/rules/release.mdc');
+    const augmentRule = graph.nodes.find((node) => node.path === '.augment/rules/release.md');
+    const geminiRule = graph.nodes.find((node) => node.path === 'GEMINI.md');
+    const factoryRule = graph.nodes.find((node) => node.path === '.factory/rules/release.md');
 
     assert.ok(agents.providerNames.includes('GitHub Copilot'));
     assert.ok(agents.providerNames.includes('OpenAI Codex'));
     assert.ok(agents.providerNames.includes('Cursor'));
+    assert.ok(agents.providerNames.includes('Augment Code'));
+    assert.ok(agents.providerNames.includes('Google Antigravity'));
+    assert.ok(agents.providerNames.includes('Factory AI'));
     assert.equal(cursorRule.providerName, 'Cursor');
+    assert.equal(augmentRule.providerName, 'Augment Code');
+    assert.equal(geminiRule.providerName, 'Google Antigravity');
+    assert.equal(factoryRule.providerName, 'Factory AI');
   }));
 });
 

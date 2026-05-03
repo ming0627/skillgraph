@@ -10,11 +10,14 @@
       "items": {
         "enum": [
           "github-copilot",
-          "openai-codex",
           "cursor",
           "claude-code",
+          "openai-codex",
           "cline",
+          "augment-code",
           "kilo-code",
+          "google-antigravity",
+          "factory-ai",
           "agent-skills"
         ]
       },

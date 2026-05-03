@@ -1,0 +1,9 @@
+areas:
+  invite_release:
+    description: "Invite flow release readiness"
+    globs:
+      - "src/invites/**"
+    rules:
+      - id: "invite_release_handoff"
+        description: "Use review-gate and release-gate when invite behavior changes."
+        severity: "high"

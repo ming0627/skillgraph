@@ -17,7 +17,7 @@ The drift:
 - one wrapper still mentions `OLD_TEST_USER`
 - one wrapper points to a retired `scripts/release/legacy-smoke.sh`
 - release depends on QA and rollback, but that dependency is easy to miss by reading files manually
-- Copilot, Cursor, Codex, Claude Code, Cline, and Kilo Code all have their own instruction files that reference the same workflow
+- Copilot, Cursor, Codex, Claude Code, Cline, Augment Code, Kilo Code, Google Antigravity, and Factory AI all have their own instruction files that reference the same workflow
 
 Generate the graph from the repo root:
 

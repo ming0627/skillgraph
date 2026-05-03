@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "description": "Map AI agent skills, wrappers, helper scripts, and workflow dependencies into Markdown, HTML, and JSON graphs.",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ming0627/skillgraph.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ming0627/skillgraph/issues"
+  },
+  "homepage": "https://github.com/ming0627/skillgraph#readme",
   "bin": {
     "skillgraph": "./bin/skillgraph.mjs"
   },
@@ -10,6 +18,7 @@
     "bin",
     "src",
     "schema",
+    "docs/*.md",
     "docs/assets",
     "README.md",
     "LICENSE"
@@ -28,8 +37,14 @@
     "mermaid",
     "knowledge-graph",
     "developer-tools",
+    "ai-instructions",
+    "agent-skills",
+    "copilot",
+    "cursor",
     "claude-code",
-    "codex"
+    "codex",
+    "cline",
+    "skill-drift"
   ],
   "author": "Sherman Lye",
   "license": "MIT",

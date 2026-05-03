@@ -6,10 +6,12 @@ import { describe, it } from 'node:test';
 
 import {
   buildSkillGraph,
+  defaultConfigTemplate,
   generateHtml,
   generateMermaid,
   loadConfig,
   parseFrontmatter,
+  renderCodexExport,
   scanForbiddenTerms,
 } from '../src/skillgraph.mjs';
 
@@ -97,7 +99,64 @@ Canonical skill instructions live at: .agents/skills/ux-autopilot/SKILL.md
     assert.ok(graph.edges.some((edge) => edge.source === auth.id && edge.target === helper.id && edge.type === 'uses-helper'));
     assert.ok(graph.edges.every((edge) => edge.evidence === ''));
     assert.ok(graph.issues.some((issue) => issue.type === 'old-default'));
+    assert.equal(graph.views.workflowSpine.length, 1);
     assert.equal(buildSkillGraph({ config }).contentHash, graph.contentHash);
+  }));
+
+  it('surfaces reuse recommendations for shared canonical skills', () => withFixture((root) => {
+    writeFixture(root, '.agents/skills/auth-qa/SKILL.md', `---
+name: auth-qa
+---
+# Auth QA
+`);
+    writeFixture(root, 'AGENTS.md', 'Use auth-qa before protected route QA.\n');
+    writeFixture(root, '.cursor/rules/auth.mdc', 'Use auth-qa before protected route QA.\n');
+
+    const graph = buildSkillGraph({ rootDir: root });
+    assert.ok(graph.recommendations.some((item) => item.type === 'package-candidate' && item.title.includes('auth-qa')));
+  }));
+
+  it('detects reusable skill package manifests', () => withFixture((root) => {
+    writeFixture(root, 'packages/auth-qa/skillgraph.skill.json', JSON.stringify({
+      id: 'com.example.auth-qa',
+      name: 'auth-qa',
+      version: '1.0.0',
+      description: 'Reusable auth QA package.',
+    }));
+
+    const graph = buildSkillGraph({ rootDir: root, roots: ['packages'] });
+    const packageNode = graph.nodes.find((node) => node.path === 'packages/auth-qa/skillgraph.skill.json');
+    assert.equal(packageNode.kind, 'skill-package');
+    assert.equal(packageNode.frontmatter.version, '1.0.0');
+    assert.equal(packageNode.frontmatter.description, 'Reusable auth QA package.');
+  }));
+
+  it('preserves structured JSON package metadata and simple YAML lists', () => withFixture((root) => {
+    writeFixture(root, 'packages/release-gate/skillgraph.skill.json', JSON.stringify({
+      id: 'com.example.release-gate',
+      name: 'release-gate',
+      version: '1.0.0',
+      description: 'Reusable release gate package.',
+      useWhen: ['Before release approval'],
+      requires: { tools: ['shell'], permissions: ['read-files'] },
+      exports: { codex: 'adapters/codex/AGENTS.fragment.md' },
+      tests: [{ command: 'scripts/release/preflight.sh' }],
+    }));
+    writeFixture(root, 'packages/auth-qa/skill.yml', `id: com.example.auth-qa
+name: auth-qa
+version: 1.0.0
+description: Reusable auth QA package.
+useWhen:
+  - Before protected route QA
+`);
+
+    const graph = buildSkillGraph({ rootDir: root, roots: ['packages'] });
+    const jsonPackage = graph.nodes.find((node) => node.path === 'packages/release-gate/skillgraph.skill.json');
+    const yamlPackage = graph.nodes.find((node) => node.path === 'packages/auth-qa/skill.yml');
+    assert.deepEqual(jsonPackage.frontmatter.requires.tools, ['shell']);
+    assert.deepEqual(jsonPackage.frontmatter.exports, { codex: 'adapters/codex/AGENTS.fragment.md' });
+    assert.deepEqual(jsonPackage.frontmatter.tests, [{ command: 'scripts/release/preflight.sh' }]);
+    assert.deepEqual(yamlPackage.frontmatter.useWhen, ['Before protected route QA']);
   }));
 
   it('resolves helper paths after a cd command', () => withFixture((root) => {
@@ -189,9 +248,51 @@ name: b
     assert.match(html, /Interactive skill map/);
     assert.match(html, /id="graphSvg"/);
     assert.match(html, /Needs attention/);
+    assert.match(html, /Triage/);
+    assert.match(html, /Workflow Spine/);
+    assert.match(html, /Inventory/);
+    assert.match(html, /Reuse/);
+    assert.match(html, /Start here/);
+    assert.match(html, /highestSeverityIssue/);
+    assert.match(html, /Reuse Opportunities/);
     assert.match(html, /id="provider"/);
     assert.match(html, /Fit all/);
   }));
+});
+
+describe('skill package utilities', () => {
+  it('renders codex exports from reusable skill packages', () => {
+    const output = renderCodexExport(
+      {
+        name: 'release-gate',
+        description: 'Verify final QA evidence.',
+        useWhen: ['Before release approval'],
+      },
+      '# Release Gate\n\nRun preflight.\n',
+    );
+
+    assert.match(output, /# release-gate/);
+    assert.match(output, /Verify final QA evidence/);
+    assert.match(output, /- Before release approval/);
+    assert.match(output, /Run preflight/);
+  });
+
+  it('creates private-team init templates without evidence by default', () => {
+    const template = defaultConfigTemplate({ privateTeam: true });
+    assert.equal(template.privacy.includeEvidence, false);
+    assert.deepEqual(template.providers, [
+      'github-copilot',
+      'cursor',
+      'claude-code',
+      'openai-codex',
+      'cline',
+      'augment-code',
+      'kilo-code',
+      'google-antigravity',
+      'factory-ai',
+      'agent-skills',
+    ]);
+  });
 });
 
 describe('scanForbiddenTerms', () => {

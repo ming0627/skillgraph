@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ming0627/skillgraph/schema/skill-package.schema.json",
+  "title": "Skillgraph skill package",
+  "type": "object",
+  "required": ["id", "name", "version", "description"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "useWhen": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "requires": {
+      "type": "object",
+      "properties": {
+        "tools": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "permissions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "runtime": { "type": "object" }
+      }
+    },
+    "provides": {
+      "type": "object",
+      "properties": {
+        "outputs": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": {
+            "enum": ["requires", "optional", "wraps", "extends", "validates", "gates"]
+          }
+        }
+      }
+    },
+    "exports": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "privacy": { "type": "object" },
+    "tests": {
+      "type": "array",
+      "items": { "type": "object" }
+    }
+  }
+}

@@ -931,7 +931,7 @@ git commit -m "docs: add github action setup"
 Use Playwright:
 
 ```bash
-NODE_PATH=/Users/sherman/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules /Users/sherman/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node scripts/capture-preview.mjs
+NODE_PATH=/path/to/playwright/node_modules node scripts/capture-preview.mjs
 ```
 
 If no script exists, create `scripts/capture-preview.mjs` using bundled Playwright. Keep it outside the npm package unless needed.

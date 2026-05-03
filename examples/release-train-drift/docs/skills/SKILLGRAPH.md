@@ -2,15 +2,15 @@
 # Skillgraph
 
 Generated: deterministic
-Content hash: `56e2fbb48a30`
+Content hash: `61fb79424a46`
 
 ## Summary
 
-- Nodes: 35
-- Edges: 140
+- Nodes: 39
+- Edges: 179
 - Issues: 3
-- Kinds: skill-doc=19, canonical-skill=7, skill=2, wrapper=1, helper-script=5, missing-helper=1
-- Providers: Google Antigravity=4, Generic Agent Skills=7, Augment Code=6, Claude Code=2, Cline=3, Cursor=3, Factory AI=5, GitHub Copilot=4, Kilo Code=3, OpenAI Codex=1, Helper Script=6
+- Kinds: skill-doc=20, canonical-skill=7, skill=3, wrapper=1, skill-package=1, helper-script=6, missing-helper=1
+- Providers: Google Antigravity=4, Generic Agent Skills=7, Augment Code=6, Claude Code=2, Cline=3, Cursor=3, Factory AI=5, GitHub Copilot=4, Kilo Code=3, OpenAI Codex=1, Custom=3, Helper Script=7
 
 ## Provider Coverage
 
@@ -61,12 +61,16 @@ flowchart LR
   N23["copilot-instructions<br/><small>skill-doc</small>"]
   N24["AGENTS<br/><small>skill-doc</small>"]
   N25["GEMINI<br/><small>skill-doc</small>"]
-  N26["ensure-auth-state.mjs<br/><small>helper-script</small>"]
-  N27["run-browser-smoke.mjs<br/><small>helper-script</small>"]
-  N28["check-acceptance.mjs<br/><small>helper-script</small>"]
-  N29["release-preflight.sh<br/><small>helper-script</small>"]
-  N30["diff-risk-check.mjs<br/><small>helper-script</small>"]
-  N31["legacy-smoke.sh<br/><small>missing-helper</small>"]
+  N26["AGENTS.fragment<br/><small>skill-doc</small>"]
+  N27["release-gate<br/><small>skill</small>"]
+  N28["release-gate<br/><small>skill-package</small>"]
+  N29["ensure-auth-state.mjs<br/><small>helper-script</small>"]
+  N30["run-browser-smoke.mjs<br/><small>helper-script</small>"]
+  N31["check-acceptance.mjs<br/><small>helper-script</small>"]
+  N32["release-preflight.sh<br/><small>helper-script</small>"]
+  N33["diff-risk-check.mjs<br/><small>helper-script</small>"]
+  N34["preflight.sh<br/><small>helper-script</small>"]
+  N35["legacy-smoke.sh<br/><small>missing-helper</small>"]
   N0 -- "calls" --> N2
   N0 -- "calls" --> N3
   N0 -- "calls" --> N4
@@ -75,6 +79,7 @@ flowchart LR
   N0 -- "calls" --> N7
   N0 -- "calls" --> N8
   N0 -- "calls" --> N10
+  N0 -- "calls" --> N27
   N1 -- "calls" --> N2
   N1 -- "calls" --> N3
   N1 -- "calls" --> N4
@@ -83,37 +88,44 @@ flowchart LR
   N1 -- "calls" --> N7
   N1 -- "calls" --> N8
   N1 -- "calls" --> N10
+  N1 -- "calls" --> N27
   N2 -- "calls" --> N3
-  N2 -- "uses helper" --> N26
+  N2 -- "uses helper" --> N29
   N3 -- "calls" --> N2
-  N3 -- "uses helper" --> N27
+  N3 -- "uses helper" --> N30
   N4 -- "calls" --> N2
   N4 -- "calls" --> N5
   N4 -- "calls" --> N6
   N4 -- "calls" --> N7
   N4 -- "calls" --> N10
+  N4 -- "calls" --> N27
   N5 -- "calls" --> N4
-  N5 -- "uses helper" --> N28
+  N5 -- "uses helper" --> N31
   N6 -- "calls" --> N7
   N6 -- "calls" --> N8
   N6 -- "calls" --> N10
-  N6 -- "uses helper" --> N29
+  N6 -- "calls" --> N27
+  N6 -- "uses helper" --> N32
   N7 -- "calls" --> N2
   N7 -- "calls" --> N5
   N7 -- "calls" --> N6
   N7 -- "calls" --> N8
   N7 -- "calls" --> N10
-  N7 -- "uses helper" --> N30
+  N7 -- "calls" --> N27
+  N7 -- "uses helper" --> N33
   N8 -- "calls" --> N6
   N8 -- "calls" --> N10
+  N8 -- "calls" --> N27
   N9 -- "calls" --> N2
   N9 -- "calls" --> N3
   N9 -- "calls" --> N4
   N9 -- "calls" --> N6
   N9 -- "calls" --> N7
   N9 -- "calls" --> N10
+  N9 -- "calls" --> N27
   N10 -- "wraps" --> N6
-  N10 -- "uses helper" --> N31
+  N10 -- "calls" --> N27
+  N10 -- "uses helper" --> N35
   N11 -- "calls" --> N2
   N11 -- "calls" --> N3
   N11 -- "calls" --> N4
@@ -128,9 +140,11 @@ flowchart LR
   N13 -- "calls" --> N7
   N13 -- "calls" --> N8
   N13 -- "calls" --> N10
+  N13 -- "calls" --> N27
   N14 -- "calls" --> N6
   N14 -- "calls" --> N8
   N14 -- "calls" --> N10
+  N14 -- "calls" --> N27
   N15 -- "calls" --> N2
   N15 -- "calls" --> N3
   N15 -- "calls" --> N4
@@ -138,10 +152,12 @@ flowchart LR
   N15 -- "calls" --> N7
   N15 -- "calls" --> N8
   N15 -- "calls" --> N10
+  N15 -- "calls" --> N27
   N16 -- "calls" --> N6
   N16 -- "calls" --> N7
   N16 -- "calls" --> N8
   N16 -- "calls" --> N10
+  N16 -- "calls" --> N27
   N17 -- "calls" --> N7
   N18 -- "calls" --> N2
   N18 -- "calls" --> N3
@@ -152,6 +168,7 @@ flowchart LR
   N19 -- "calls" --> N6
   N19 -- "calls" --> N7
   N19 -- "calls" --> N10
+  N19 -- "calls" --> N27
   N20 -- "calls" --> N2
   N20 -- "calls" --> N3
   N20 -- "calls" --> N4
@@ -159,6 +176,7 @@ flowchart LR
   N21 -- "calls" --> N6
   N21 -- "calls" --> N7
   N21 -- "calls" --> N10
+  N21 -- "calls" --> N27
   N22 -- "calls" --> N2
   N22 -- "calls" --> N3
   N22 -- "calls" --> N7
@@ -169,6 +187,7 @@ flowchart LR
   N23 -- "calls" --> N6
   N23 -- "calls" --> N7
   N23 -- "calls" --> N10
+  N23 -- "calls" --> N27
   N24 -- "calls" --> N2
   N24 -- "calls" --> N3
   N24 -- "calls" --> N4
@@ -176,6 +195,7 @@ flowchart LR
   N24 -- "calls" --> N6
   N24 -- "calls" --> N7
   N24 -- "calls" --> N10
+  N24 -- "calls" --> N27
   N25 -- "calls" --> N2
   N25 -- "calls" --> N3
   N25 -- "calls" --> N4
@@ -184,6 +204,21 @@ flowchart LR
   N25 -- "calls" --> N7
   N25 -- "calls" --> N8
   N25 -- "calls" --> N10
+  N25 -- "calls" --> N27
+  N26 -- "calls" --> N6
+  N26 -- "calls" --> N7
+  N26 -- "calls" --> N8
+  N26 -- "calls" --> N10
+  N26 -- "calls" --> N27
+  N26 -- "uses helper" --> N34
+  N27 -- "calls" --> N7
+  N27 -- "calls" --> N8
+  N27 -- "uses helper" --> N34
+  N28 -- "calls" --> N7
+  N28 -- "calls" --> N8
+  N28 -- "calls" --> N24
+  N28 -- "calls" --> N26
+  N28 -- "uses helper" --> N34
   class N0 doc
   class N1 doc
   class N2 canonical
@@ -210,12 +245,16 @@ flowchart LR
   class N23 doc
   class N24 doc
   class N25 doc
-  class N26 helper
-  class N27 helper
-  class N28 helper
+  class N26 doc
+  class N27 doc
+  class N28 doc
   class N29 helper
   class N30 helper
   class N31 helper
+  class N32 helper
+  class N33 helper
+  class N34 helper
+  class N35 helper
 ```
 
 ## Issues
@@ -257,11 +296,15 @@ flowchart LR
 | `CLAUDE` | Claude Code / Augment Code | skill-doc | `CLAUDE.md` | 56 |
 | `GEMINI` | Google Antigravity | skill-doc | `GEMINI.md` | 70 |
 | `kilo` | Kilo Code | skill-doc | `kilo.jsonc` | 19 |
+| `AGENTS.fragment` | Custom | skill-doc | `packages/release-gate/adapters/codex/AGENTS.fragment.md` | 82 |
+| `release-gate` | Custom | skill | `packages/release-gate/SKILL.md` | 72 |
+| `release-gate` | Custom | skill-package | `packages/release-gate/skillgraph.skill.json` | 229 |
 | `ensure-auth-state.mjs` | Helper Script | helper-script | `.agents/skills/auth-qa/scripts/ensure-auth-state.mjs` | 27 |
 | `run-browser-smoke.mjs` | Helper Script | helper-script | `.agents/skills/browser-qa/scripts/run-browser-smoke.mjs` | 18 |
 | `check-acceptance.mjs` | Helper Script | helper-script | `.agents/skills/product-requirements/scripts/check-acceptance.mjs` | 26 |
 | `release-preflight.sh` | Helper Script | helper-script | `.agents/skills/release-gate/scripts/release-preflight.sh` | 17 |
 | `diff-risk-check.mjs` | Helper Script | helper-script | `.agents/skills/review-gate/scripts/diff-risk-check.mjs` | 16 |
+| `preflight.sh` | Helper Script | helper-script | `packages/release-gate/scripts/release/preflight.sh` | 19 |
 | `legacy-smoke.sh` | Helper Script | missing-helper | `scripts/release/legacy-smoke.sh` | 0 |
 
 ## Edges
@@ -276,6 +319,7 @@ flowchart LR
 | `invite-flow` | calls | `review-gate` |  |
 | `invite-flow` | calls | `rollback-runbook` |  |
 | `invite-flow` | calls | `release-gate` |  |
+| `invite-flow` | calls | `release-gate` |  |
 | `release-train` | calls | `auth-qa` |  |
 | `release-train` | calls | `browser-qa` |  |
 | `release-train` | calls | `implementation-workflow` |  |
@@ -283,6 +327,7 @@ flowchart LR
 | `release-train` | calls | `release-gate` |  |
 | `release-train` | calls | `review-gate` |  |
 | `release-train` | calls | `rollback-runbook` |  |
+| `release-train` | calls | `release-gate` |  |
 | `release-train` | calls | `release-gate` |  |
 | `auth-qa` | calls | `browser-qa` |  |
 | `auth-qa` | references | `review-gate` |  |
@@ -294,10 +339,12 @@ flowchart LR
 | `implementation-workflow` | calls | `release-gate` |  |
 | `implementation-workflow` | calls | `review-gate` |  |
 | `implementation-workflow` | calls | `release-gate` |  |
+| `implementation-workflow` | calls | `release-gate` |  |
 | `product-requirements` | calls | `implementation-workflow` |  |
 | `product-requirements` | uses-helper | `check-acceptance.mjs` |  |
 | `release-gate` | calls | `review-gate` |  |
 | `release-gate` | calls | `rollback-runbook` |  |
+| `release-gate` | calls | `release-gate` |  |
 | `release-gate` | calls | `release-gate` |  |
 | `release-gate` | uses-helper | `release-preflight.sh` |  |
 | `review-gate` | calls | `auth-qa` |  |
@@ -305,12 +352,15 @@ flowchart LR
 | `review-gate` | calls | `release-gate` |  |
 | `review-gate` | calls | `rollback-runbook` |  |
 | `review-gate` | calls | `release-gate` |  |
+| `review-gate` | calls | `release-gate` |  |
 | `review-gate` | uses-helper | `diff-risk-check.mjs` |  |
+| `rollback-runbook` | calls | `release-gate` |  |
 | `rollback-runbook` | calls | `release-gate` |  |
 | `rollback-runbook` | calls | `release-gate` |  |
 | `augment-release-reviewer` | references | `auth-qa` |  |
 | `augment-release-reviewer` | references | `browser-qa` |  |
 | `augment-release-reviewer` | references | `implementation-workflow` |  |
+| `augment-release-reviewer` | references | `release-gate` |  |
 | `augment-release-reviewer` | references | `release-gate` |  |
 | `augment-release-reviewer` | references | `release-gate` |  |
 | `invite-flow` | calls | `auth-qa` |  |
@@ -319,7 +369,9 @@ flowchart LR
 | `invite-flow` | calls | `release-gate` |  |
 | `invite-flow` | calls | `review-gate` |  |
 | `invite-flow` | calls | `release-gate` |  |
+| `invite-flow` | calls | `release-gate` |  |
 | `release-gate` | wraps | `release-gate` |  |
+| `release-gate` | calls | `release-gate` |  |
 | `release-gate` | uses-helper | `legacy-smoke.sh` |  |
 | `invite-flow` | calls | `auth-qa` |  |
 | `invite-flow` | calls | `browser-qa` |  |
@@ -337,8 +389,10 @@ flowchart LR
 | `release-check` | calls | `review-gate` |  |
 | `release-check` | calls | `rollback-runbook` |  |
 | `release-check` | calls | `release-gate` |  |
+| `release-check` | calls | `release-gate` |  |
 | `factory-release-reviewer` | calls | `release-gate` |  |
 | `factory-release-reviewer` | calls | `rollback-runbook` |  |
+| `factory-release-reviewer` | calls | `release-gate` |  |
 | `factory-release-reviewer` | calls | `release-gate` |  |
 | `invite-flow` | calls | `auth-qa` |  |
 | `invite-flow` | calls | `browser-qa` |  |
@@ -347,12 +401,15 @@ flowchart LR
 | `invite-flow` | calls | `review-gate` |  |
 | `invite-flow` | calls | `rollback-runbook` |  |
 | `invite-flow` | calls | `release-gate` |  |
+| `invite-flow` | calls | `release-gate` |  |
 | `release-handoff` | calls | `release-gate` |  |
 | `release-handoff` | calls | `review-gate` |  |
 | `release-handoff` | calls | `rollback-runbook` |  |
 | `release-handoff` | calls | `release-gate` |  |
+| `release-handoff` | calls | `release-gate` |  |
 | `review.instructions` | references | `release-gate` |  |
 | `review.instructions` | calls | `review-gate` |  |
+| `review.instructions` | references | `release-gate` |  |
 | `review.instructions` | references | `release-gate` |  |
 | `write-tests.prompt` | calls | `auth-qa` |  |
 | `write-tests.prompt` | calls | `browser-qa` |  |
@@ -363,12 +420,14 @@ flowchart LR
 | `invite-flow` | calls | `release-gate` |  |
 | `invite-flow` | calls | `review-gate` |  |
 | `invite-flow` | calls | `release-gate` |  |
+| `invite-flow` | calls | `release-gate` |  |
 | `.augment-guidelines` | calls | `auth-qa` |  |
 | `.augment-guidelines` | calls | `browser-qa` |  |
 | `.augment-guidelines` | calls | `implementation-workflow` |  |
 | `.augment-guidelines` | calls | `review-gate` |  |
 | `code_review_guidelines` | calls | `release-gate` |  |
 | `code_review_guidelines` | calls | `review-gate` |  |
+| `code_review_guidelines` | calls | `release-gate` |  |
 | `code_review_guidelines` | calls | `release-gate` |  |
 | `.cursorrules` | calls | `auth-qa` |  |
 | `.cursorrules` | calls | `browser-qa` |  |
@@ -386,6 +445,7 @@ flowchart LR
 | `copilot-instructions` | references | `invite-flow` |  |
 | `copilot-instructions` | references | `invite-flow` |  |
 | `copilot-instructions` | references | `invite-flow` |  |
+| `copilot-instructions` | calls | `release-gate` |  |
 | `AGENTS` | calls | `auth-qa` |  |
 | `AGENTS` | calls | `browser-qa` |  |
 | `AGENTS` | calls | `implementation-workflow` |  |
@@ -393,12 +453,14 @@ flowchart LR
 | `AGENTS` | calls | `release-gate` |  |
 | `AGENTS` | calls | `review-gate` |  |
 | `AGENTS` | calls | `release-gate` |  |
+| `AGENTS` | calls | `release-gate` |  |
 | `CLAUDE` | references | `auth-qa` |  |
 | `CLAUDE` | references | `browser-qa` |  |
 | `CLAUDE` | references | `implementation-workflow` |  |
 | `CLAUDE` | references | `product-requirements` |  |
 | `CLAUDE` | references | `release-gate` |  |
 | `CLAUDE` | references | `review-gate` |  |
+| `CLAUDE` | references | `release-gate` |  |
 | `CLAUDE` | references | `release-gate` |  |
 | `GEMINI` | calls | `auth-qa` |  |
 | `GEMINI` | calls | `browser-qa` |  |
@@ -408,3 +470,23 @@ flowchart LR
 | `GEMINI` | calls | `review-gate` |  |
 | `GEMINI` | calls | `rollback-runbook` |  |
 | `GEMINI` | calls | `release-gate` |  |
+| `GEMINI` | calls | `release-gate` |  |
+| `AGENTS.fragment` | calls | `release-gate` |  |
+| `AGENTS.fragment` | calls | `review-gate` |  |
+| `AGENTS.fragment` | calls | `rollback-runbook` |  |
+| `AGENTS.fragment` | calls | `release-gate` |  |
+| `AGENTS.fragment` | calls | `release-gate` |  |
+| `AGENTS.fragment` | uses-helper | `preflight.sh` |  |
+| `release-gate` | references | `release-gate` |  |
+| `release-gate` | calls | `review-gate` |  |
+| `release-gate` | calls | `rollback-runbook` |  |
+| `release-gate` | references | `release-gate` |  |
+| `release-gate` | uses-helper | `preflight.sh` |  |
+| `release-gate` | references | `release-gate` |  |
+| `release-gate` | calls | `review-gate` |  |
+| `release-gate` | calls | `rollback-runbook` |  |
+| `release-gate` | references | `release-gate` |  |
+| `release-gate` | calls | `AGENTS` |  |
+| `release-gate` | calls | `AGENTS.fragment` |  |
+| `release-gate` | references | `release-gate` |  |
+| `release-gate` | uses-helper | `preflight.sh` |  |

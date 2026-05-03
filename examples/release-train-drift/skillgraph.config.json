@@ -12,6 +12,7 @@
     "factory-ai",
     "agent-skills"
   ],
+  "roots": ["packages"],
   "outDir": "docs/skills",
   "canonicalRoots": [".agents/skills"],
   "wrapperRoots": [".claude/skills"],

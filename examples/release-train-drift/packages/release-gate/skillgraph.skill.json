@@ -1,0 +1,30 @@
+{
+  "$schema": "../../../../schema/skill-package.schema.json",
+  "id": "com.example.release-gate",
+  "name": "release-gate",
+  "version": "1.0.0",
+  "description": "Verify final QA evidence and release handoff readiness.",
+  "useWhen": ["Before release approval", "After review and browser QA"],
+  "requires": {
+    "tools": ["shell"],
+    "permissions": ["read-files", "run-local-command"]
+  },
+  "provides": {
+    "outputs": ["release-evidence", "handoff-summary"]
+  },
+  "dependencies": [
+    { "id": "com.example.review-gate", "type": "requires" },
+    { "id": "com.example.rollback-runbook", "type": "gates" }
+  ],
+  "exports": {
+    "codex": "adapters/codex/AGENTS.fragment.md",
+    "claude-code": "adapters/claude-code/SKILL.md",
+    "cursor": "adapters/cursor/release-gate.mdc"
+  },
+  "privacy": {
+    "dataRisk": "public-example"
+  },
+  "tests": [
+    { "command": "scripts/release/preflight.sh" }
+  ]
+}

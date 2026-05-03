@@ -188,6 +188,7 @@ name: b
     const html = generateHtml(buildSkillGraph({ rootDir: root }));
     assert.match(html, /Interactive skill map/);
     assert.match(html, /id="graphSvg"/);
+    assert.match(html, /Needs attention/);
     assert.match(html, /id="provider"/);
     assert.match(html, /Fit all/);
   }));

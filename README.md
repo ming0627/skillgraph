@@ -78,7 +78,7 @@ open examples/release-train-drift/docs/skills/skillgraph.html
 
 ## Interactive UI
 
-The main human experience is `skillgraph.html`, a self-contained explorer with search, provider filters, kind filters, edge-type filters, pan/zoom, fit-to-screen, issue highlighting, and a dependency inspector.
+The main human experience is `skillgraph.html`, a self-contained explorer that opens on `Needs attention` and supports search, provider filters, kind filters, edge-type filters, pan/zoom, fit-to-screen, issue highlighting, and a dependency inspector.
 
 ![Skillgraph interactive UI preview](docs/assets/skillgraph-ui-preview.svg)
 

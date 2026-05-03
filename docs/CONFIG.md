@@ -10,7 +10,7 @@ Skillgraph reads `skillgraph.config.json` from the target repo root by default.
   "outDir": "docs/skills",
   "canonicalRoots": [".agents/skills"],
   "wrapperRoots": [".claude/skills"],
-  "exclude": ["**/node_modules/**", "**/.git/**"],
+  "exclude": ["node_modules/**", "**/node_modules/**", ".git/**", "**/.git/**"],
   "instructionExtensions": [".md", ".mdc", ".txt", ".json", ".jsonc", ".yaml", ".yml"],
   "privacy": {
     "includeEvidence": true,

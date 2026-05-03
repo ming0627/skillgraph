@@ -99,7 +99,7 @@ const DEFAULT_CONFIG = {
   outDir: 'docs/skills',
   canonicalRoots: ['.agents/skills'],
   wrapperRoots: ['.claude/skills'],
-  exclude: ['**/node_modules/**', '**/.git/**'],
+  exclude: ['node_modules/**', '**/node_modules/**', '.git/**', '**/.git/**'],
   instructionExtensions: ['.md', '.mdc', '.txt', '.json', '.jsonc', '.yaml', '.yml'],
   helperPatterns: [
     'scripts/**/*.mjs',
@@ -817,6 +817,7 @@ export function generateHtml(graph) {
     }
     .node-list, .issue-list { overflow:auto; padding:10px; }
     .node-list { display:grid; gap:8px; }
+    .attention-list { display:grid; gap:8px; max-height:360px; overflow:auto; margin-top:12px; padding-top:12px; border-top:1px solid var(--line); }
     .node-row {
       width:100%;
       min-height:70px;
@@ -829,6 +830,21 @@ export function generateHtml(graph) {
       cursor:pointer;
     }
     .node-row:hover, .node-row.active { border-color:var(--blue); outline:2px solid rgba(45,91,227,.12); }
+    .issue-button {
+      width:100%;
+      text-align:left;
+      border:1px solid var(--line);
+      border-left:4px solid var(--amber);
+      border-radius:8px;
+      padding:9px 10px;
+      background:white;
+      color:var(--ink);
+      cursor:pointer;
+    }
+    .issue-button.error { border-left-color:var(--red); }
+    .issue-button:hover { border-color:var(--blue); outline:2px solid rgba(45,91,227,.12); }
+    .issue-summary { display:block; font-size:13px; line-height:1.28; max-height:34px; overflow:hidden; }
+    .issue-button .path { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .row-title { display:block; margin-bottom:4px; font-weight:750; overflow-wrap:anywhere; }
     .row-meta, .path, .muted { color:var(--muted); font-size:12px; overflow-wrap:anywhere; }
     .map-panel { position:relative; display:grid; grid-template-rows:auto minmax(0, 1fr); height:calc(100vh - 164px); min-height:560px; overflow:hidden; }
@@ -920,7 +936,7 @@ export function generateHtml(graph) {
       <div>
         <p class="eyebrow">Interactive skill map</p>
         <h1>Skillgraph</h1>
-        <p class="lede">Explore every agent skill, provider instruction file, wrapper, helper script, dependency edge, and issue in one generated UI.</p>
+        <p class="lede">Find broken, stale, duplicated, and disconnected agent instructions, then trace which skills and tools they affect.</p>
       </div>
       <div class="metrics" id="metrics"></div>
     </header>
@@ -929,11 +945,17 @@ export function generateHtml(graph) {
         <div class="panel-head">
           <h2>Find Skills</h2>
           <div class="filters">
+            <select id="scope">
+              <option value="attention">Needs attention</option>
+              <option value="workflow">Workflow edges</option>
+              <option value="all">All edges</option>
+            </select>
             <input id="search" type="search" placeholder="Search skills, paths, providers" />
             <select id="provider"><option value="">All providers</option></select>
             <select id="kind"><option value="">All kinds</option></select>
             <select id="edgeType"><option value="">All edge types</option></select>
           </div>
+          <div class="attention-list" id="attentionList"></div>
         </div>
         <div class="node-list" id="nodeList" aria-label="Skill nodes"></div>
       </aside>
@@ -975,8 +997,23 @@ export function generateHtml(graph) {
     const edges = graph.edges.slice();
     const byId = new Map(nodes.map(node => [node.id, node]));
     const issuePaths = new Set(graph.issues.flatMap(issue => issue.paths || []));
+    const issuesByPath = new Map();
+    for (const issue of graph.issues) {
+      for (const path of issue.paths || []) {
+        const list = issuesByPath.get(path) || [];
+        list.push(issue);
+        issuesByPath.set(path, list);
+      }
+    }
+    const issueNodeIds = new Set(nodes.filter(node => issuePaths.has(node.path)).map(node => node.id));
+    const attentionIds = new Set(issueNodeIds);
+    for (const edge of edges) {
+      if (issueNodeIds.has(edge.source)) attentionIds.add(edge.target);
+      if (issueNodeIds.has(edge.target)) attentionIds.add(edge.source);
+    }
     const state = {
       selectedId: "",
+      scope: "attention",
       query: "",
       provider: "",
       kind: "",
@@ -984,10 +1021,12 @@ export function generateHtml(graph) {
       viewBox: null,
       layout: new Map(),
     };
+    const scope = document.getElementById('scope');
     const search = document.getElementById('search');
     const provider = document.getElementById('provider');
     const kind = document.getElementById('kind');
     const edgeType = document.getElementById('edgeType');
+    const attentionList = document.getElementById('attentionList');
     const nodeList = document.getElementById('nodeList');
     const svg = document.getElementById('graphSvg');
     const detailTitle = document.getElementById('detailTitle');
@@ -999,7 +1038,7 @@ export function generateHtml(graph) {
       metric(graph.summary.nodeCount, 'nodes'),
       metric(graph.summary.edgeCount, 'edges'),
       metric(graph.summary.issueCount, 'issues'),
-      metric(graph.contentHash, 'hash')
+      metric(graph.providers.length, 'providers')
     ].join('');
     for (const value of [...new Set(nodes.flatMap(node => node.providerNames || [node.providerName]))].sort()) {
       const option = document.createElement('option');
@@ -1032,13 +1071,27 @@ export function generateHtml(graph) {
       if (!state.provider) return true;
       return (node.providerNames || [node.providerName]).includes(state.provider);
     }
+    function hasManualFilter() {
+      return Boolean(state.query || state.provider || state.kind || state.edgeType);
+    }
+    function nodeInScope(node) {
+      if (state.scope !== 'attention') return true;
+      if (hasManualFilter()) return true;
+      return attentionIds.has(node.id);
+    }
     function matchesNode(node) {
+      if (!nodeInScope(node)) return false;
       if (state.kind && node.kind !== state.kind) return false;
       if (!providerMatch(node)) return false;
       if (state.query && !textFor(node).includes(state.query)) return false;
       return true;
     }
     function edgeAllowed(edge) {
+      if (state.scope === 'attention') {
+        if (edge.type === 'references') return false;
+        if (!hasManualFilter() && (!attentionIds.has(edge.source) || !attentionIds.has(edge.target))) return false;
+      }
+      if (state.scope === 'workflow' && edge.type === 'references') return false;
       return !state.edgeType || edge.type === state.edgeType;
     }
     function relatedToSelection(edge) {
@@ -1061,9 +1114,11 @@ export function generateHtml(graph) {
       return lines.length ? lines.slice(0, 2) : [''];
     }
     function layoutGraph() {
-      const rank = new Map(nodes.map(node => [node.id, 0]));
-      const strongEdges = edges.filter(edge => edge.type !== 'references');
-      for (let pass = 0; pass < nodes.length; pass += 1) {
+      const layoutNodes = nodes.filter(matchesNode);
+      const layoutIds = new Set(layoutNodes.map(node => node.id));
+      const rank = new Map(layoutNodes.map(node => [node.id, 0]));
+      const strongEdges = edges.filter(edge => edgeAllowed(edge) && edge.type !== 'references' && layoutIds.has(edge.source) && layoutIds.has(edge.target));
+      for (let pass = 0; pass < layoutNodes.length; pass += 1) {
         let changed = false;
         for (const edge of strongEdges) {
           if (!rank.has(edge.source) || !rank.has(edge.target)) continue;
@@ -1076,11 +1131,11 @@ export function generateHtml(graph) {
         if (!changed) break;
       }
       const connected = new Set(strongEdges.flatMap(edge => [edge.source, edge.target]));
-      for (const node of nodes) {
+      for (const node of layoutNodes) {
         if (!connected.has(node.id)) rank.set(node.id, Math.max(rank.get(node.id) || 0, 0));
       }
       const groups = new Map();
-      for (const node of nodes) {
+      for (const node of layoutNodes) {
         const key = rank.get(node.id) || 0;
         const list = groups.get(key) || [];
         list.push(node);
@@ -1152,6 +1207,32 @@ export function generateHtml(graph) {
         nodeList.append(button);
       }
     }
+    function nodeForIssue(issue) {
+      return nodes.find(node => (issue.paths || []).includes(node.path));
+    }
+    function renderAttention() {
+      attentionList.textContent = '';
+      if (!graph.issues.length) {
+        attentionList.innerHTML = '<div class="empty">No issues detected.</div>';
+        return;
+      }
+      const title = document.createElement('h3');
+      title.textContent = 'Needs Attention';
+      attentionList.append(title);
+      for (const issue of graph.issues) {
+        const button = document.createElement('button');
+        const node = nodeForIssue(issue);
+        button.type = 'button';
+        button.className = 'issue-button ' + html(issue.severity);
+        button.innerHTML = '<span class="row-title">' + html(issue.severity) + ' | ' + html(issue.type) + '</span><span class="issue-summary">' + html(issue.message) + '</span><span class="path">' + html((issue.paths || []).join(', ')) + '</span>';
+        button.onclick = () => {
+          state.scope = 'attention';
+          scope.value = state.scope;
+          if (node) selectNode(node.id);
+        };
+        attentionList.append(button);
+      }
+    }
     function createSvg(tag, attrs = {}) {
       const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
       for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, value);
@@ -1165,13 +1246,14 @@ export function generateHtml(graph) {
       const edgeLayer = createSvg('g');
       const nodeLayer = createSvg('g');
       svg.append(edgeLayer, nodeLayer);
-      for (const edge of edges.filter(edgeAllowed)) {
+      const graphNodes = nodes.filter(matchesNode);
+      const graphNodeIds = new Set(graphNodes.map(node => node.id));
+      const graphEdges = edges.filter(edge => edgeAllowed(edge) && graphNodeIds.has(edge.source) && graphNodeIds.has(edge.target));
+      const showAllLabels = !state.selectedId && graphEdges.length <= 28;
+      for (const edge of graphEdges) {
         const source = state.layout.get(edge.source);
         const target = state.layout.get(edge.target);
         if (!source || !target) continue;
-        const sourceNode = byId.get(edge.source);
-        const targetNode = byId.get(edge.target);
-        const visible = matchesNode(sourceNode) && matchesNode(targetNode);
         const selected = relatedToSelection(edge);
         const startX = source.x + source.width;
         const startY = source.y + source.height / 2;
@@ -1180,11 +1262,11 @@ export function generateHtml(graph) {
         const curve = Math.max(80, Math.abs(endX - startX) * .46);
         const path = createSvg('path', {
           d: 'M ' + startX + ' ' + startY + ' C ' + (startX + curve) + ' ' + startY + ', ' + (endX - curve) + ' ' + endY + ', ' + endX + ' ' + endY,
-          class: 'edge-path ' + edge.type + ((!visible || !selected) ? ' dim' : ''),
+          class: 'edge-path ' + edge.type + (!selected ? ' dim' : ''),
           'marker-end': 'url(#arrow)',
         });
         edgeLayer.append(path);
-        if (edge.type !== 'references' && visible) {
+        if (edge.type !== 'references' && (showAllLabels || (state.selectedId && selected))) {
           const label = createSvg('text', {
             x: (startX + endX) / 2,
             y: (startY + endY) / 2 - 7,
@@ -1195,15 +1277,14 @@ export function generateHtml(graph) {
           edgeLayer.append(label);
         }
       }
-      for (const node of nodes) {
+      for (const node of graphNodes) {
         const item = state.layout.get(node.id);
         if (!item) continue;
-        const visible = matchesNode(node);
         const related = !state.selectedId || state.selectedId === node.id || edges.some(edge => relatedToSelection(edge) && (edge.source === node.id || edge.target === node.id));
         const group = createSvg('g', {
-          class: 'node-g ' + node.kind + (state.selectedId === node.id ? ' selected' : '') + (issuePaths.has(node.path) ? ' issue' : '') + ((!visible || !related) ? ' dim' : ''),
+          class: 'node-g ' + node.kind + (state.selectedId === node.id ? ' selected' : '') + (issuePaths.has(node.path) ? ' issue' : '') + (!related ? ' dim' : ''),
           transform: 'translate(' + item.x + ' ' + item.y + ')',
-          tabindex: visible ? '0' : '-1',
+          tabindex: '0',
           role: 'button',
         });
         group.addEventListener('click', () => selectNode(node.id));
@@ -1236,7 +1317,7 @@ export function generateHtml(graph) {
       detailTitle.textContent = node.name;
       detailSubtitle.textContent = node.path;
       const related = edges.filter(edge => edge.source === node.id || edge.target === node.id);
-      const nodeIssues = graph.issues.filter(issue => (issue.paths || []).includes(node.path));
+      const nodeIssues = issuesByPath.get(node.path) || [];
       detail.innerHTML =
         '<div class="badge-row">' +
           '<span class="badge">' + html(node.kind) + '</span>' +
@@ -1257,7 +1338,9 @@ export function generateHtml(graph) {
         : '<div class="empty">No issues detected.</div>';
     }
     function render() {
+      layoutGraph();
       renderList();
+      renderAttention();
       renderGraph();
       renderDetail();
       renderIssues();
@@ -1273,18 +1356,23 @@ export function generateHtml(graph) {
       state.kind = "";
       state.edgeType = "";
       state.selectedId = "";
+      state.scope = "attention";
       search.value = "";
       provider.value = "";
       kind.value = "";
       edgeType.value = "";
+      scope.value = state.scope;
+      state.viewBox = null;
       render();
-      fitAll();
     }
     function syncFilters() {
       state.query = search.value.trim().toLowerCase();
+      state.scope = scope.value;
       state.provider = provider.value;
       state.kind = kind.value;
       state.edgeType = edgeType.value;
+      state.selectedId = "";
+      state.viewBox = null;
       render();
     }
     let dragStart = null;
@@ -1309,6 +1397,7 @@ export function generateHtml(graph) {
       event.preventDefault();
       zoom(event.deltaY > 0 ? 1.12 : .88);
     }, { passive: false });
+    scope.addEventListener('change', syncFilters);
     search.addEventListener('input', syncFilters);
     provider.addEventListener('change', syncFilters);
     kind.addEventListener('change', syncFilters);
@@ -1317,7 +1406,6 @@ export function generateHtml(graph) {
     document.getElementById('zoomIn').addEventListener('click', () => zoom(.82));
     document.getElementById('zoomOut').addEventListener('click', () => zoom(1.18));
     document.getElementById('reset').addEventListener('click', resetFilters);
-    layoutGraph();
     render();
   </script>
 </body>
@@ -1357,7 +1445,13 @@ export function scanForbiddenTerms(rootDir, terms, exclude = DEFAULT_CONFIG.excl
   function walk(currentAbs) {
     const repoPath = normalizePath(relative(rootDir, currentAbs));
     if (repoPath && isExcluded(repoPath, exclude)) return;
-    const stat = statSync(currentAbs);
+    let stat;
+    try {
+      stat = statSync(currentAbs);
+    } catch (error) {
+      if (error?.code === 'ENOENT') return;
+      throw error;
+    }
     if (stat.isDirectory()) {
       for (const entry of readdirSync(currentAbs)) walk(join(currentAbs, entry));
       return;
